@@ -1,0 +1,496 @@
+@use 'var';
+
+.hide {
+    @include var.hide;
+}
+
+.select {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: 1.4;
+    position: relative;
+
+    select {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        padding: 0 1.2rem;
+        padding-right: 4rem;
+        z-index: 1;
+        background: transparent;
+        min-width: 18rem;
+        width: 100%;
+        height: 4.2rem;
+        border: 1px solid var.$colorGray3;
+        border-radius: 2px;
+        box-sizing: border-box;
+        color: var.$colorBlack;
+    }
+
+    .arrow {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1.4rem;
+        height: 1.4rem;
+
+        @include var.vCenter;
+        left: auto;
+        right: 1.2rem;
+
+        & svg {
+            width: 100%;
+            fill: var.$colorGray2;
+        }
+
+        &.open svg {
+            transform: rotate(180deg);
+        }
+    }
+
+    &.min {
+        select {
+            height: 3.2rem;
+            min-width: 0;
+            padding: 0 3.2rem 0 1rem;
+        }
+
+        .arrow {
+            width: 1.1rem;
+            height: 1.1rem;
+            right: 1rem;
+        }
+    }
+
+}
+
+.date-picker {
+    display: flex;
+    flex-flow: row wrap;
+    grid-column-gap: 1.2rem;
+
+    li.tide {
+        color: var.$colorGray2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    li {
+        position: relative;
+    }
+
+    input[type='date'] {
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: var.$colorBlack;
+        border: 1px solid var.$colorGray3;
+        border-radius: 2px;
+        background: transparent;
+        width: 18rem;
+        height: 4.2rem;
+        padding: 0 1.2rem;
+        box-sizing: border-box;
+        position: relative;
+        text-indent: 1.2rem;
+        z-index: 1;
+    }
+
+    input[type='date']::-webkit-calendar-picker-indicator {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        cursor: pointer;
+
+        @include var.center;
+    }
+
+    .icon {
+        width: 1.6rem;
+        height: 1.6rem;
+
+        @include var.vCenter;
+        left: 1.2rem;
+        margin-top: -1px;
+    }
+
+    .icon svg {
+        fill: var.$colorGray2;
+        width: 100%;
+        height: 100%;
+    }
+
+    &.time {
+        grid-column-gap: 2.4rem;
+
+        li {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+
+            label {
+                margin-left: 0;
+            }
+
+            p {
+                margin-left: .8rem
+            }
+
+            .select select {
+                min-width: 0;
+            }
+        }
+    }
+}
+
+.input-text {
+    font-size: 1.6rem;
+    line-height: 1.4;
+    color: var.$colorBlack;
+    border: 1px solid var.$colorGray3;
+    border-radius: 2px;
+    box-sizing: border-box;
+
+    input[type="text"] {
+        height: 4rem;
+        width: 100%;
+        text-indent: 1.2rem;
+    }
+
+    input[type="text"]::placeholder {
+        color: var.$colorGray2;
+    }
+
+    &.min {
+        input[type="text"] {
+            height: 3.2rem;
+        }
+    }
+
+    &.wide {
+        width: 60%;
+    }
+
+    &.inner {
+        width: calc(99% - 1.2rem);
+        margin: 0 auto;
+
+        .center:has(&) label.hide {
+            position: absolute;
+        }
+
+        input[type=text] {
+            width: 100%;
+            margin-left: -1.2rem;
+        }
+    }
+}
+
+.radio {
+    display: flex;
+    height: 4.2rem;
+
+    label {
+        font-size: 1.6rem;
+        line-height: 2rem;
+        padding: 0;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+        align-content: center;
+        color: var.$colorBlack;
+        cursor: pointer;
+
+        & span {
+            display: inline-block;
+            margin-left: .8rem;
+            margin-top: 2px;
+        }
+
+        &:has([type="radio"]:disabled) {
+            cursor: not-allowed;
+        }
+    }
+
+    [type="radio"],
+    span {
+        vertical-align: middle;
+    }
+
+    [type="radio"] {
+        appearance: none;
+        border: 1px solid var.$colorGray3;
+        border-radius: 50%;
+        width: 1.25em;
+        height: 1.25em;
+        transition: border 0.15s ease;
+
+        &:checked {
+            border: 6px solid var.$colorPrimary;
+        }
+
+        &:focus-visible {
+            outline-offset: max(2px, 0.1em);
+            outline: max(2px, 0.1em) dotted var.$colorPrimary;
+        }
+
+        &:hover {
+            box-shadow: 0 0 0 2px var.$colorGray3;
+            cursor: pointer;
+        }
+
+        &:hover+span {
+            cursor: pointer;
+        }
+
+        &:disabled {
+            background-color: var.$colorBg;
+            box-shadow: none;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        &:disabled+span {
+            opacity: 0.7;
+            cursor: not-allowed;
+            color: var.$colorGray2;
+        }
+    }
+}
+
+.check {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: auto;
+
+    &.center {
+        width: 20px;
+    }
+
+    input[type="checkbox"] {
+        width: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        cursor: pointer;
+
+        &+label {
+            position: relative;
+            width: auto;
+            line-height: 1.4;
+            cursor: pointer;
+
+            span {
+                display: block;
+                width: 100%;
+                padding-left: 20px;
+                font-weight: 500;
+            }
+
+            &::before {
+                display: block;
+                content: '';
+                width: 2rem;
+                height: 2rem;
+                background: var.$colorWhite;
+                border: 1px solid var.$colorGray3;
+                border-radius: 2px;
+                position: absolute;
+                top: 1px;
+                box-sizing: border-box;
+            }
+
+            .icon {
+                display: flex;
+                width: 12px;
+                height: 8px;
+                position: absolute;
+                top: 7px;
+                left: 4px;
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                    fill: var.$colorGray3;
+                }
+            }
+
+            &.hide {
+                width: 2rem;
+                margin-left: 0;
+
+                span {
+                    padding: 0;
+                }
+            }
+        }
+
+        &:focus-visible+label {
+            outline-offset: max(2px, 0.1em);
+            outline: max(2px, 0.1em) solid var.$colorPrimary;
+        }
+
+        &:checked+label {
+            &::before {
+                background: var.$colorPrimary;
+                border-color: var.$colorPrimary;
+            }
+
+            .icon {
+                svg {
+                    fill: var.$colorWhite;
+                }
+            }
+        }
+
+        &:disabled+label {
+            cursor: default;
+
+            &::before {
+                background: var.$colorBg;
+            }
+
+            .icon {
+                display: none;
+            }
+        }
+    }
+
+    &.center {
+        justify-content: center;
+        margin: 0 auto;
+    }
+}
+
+.form-area {
+    @include var.floatBox;
+
+    padding: 2.4rem;
+    font-size: 1.6rem;
+    line-height: 1.4;
+    box-sizing: border-box;
+
+    .row {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+        align-items: center;
+        grid-column-gap: 2.4rem;
+        margin-bottom: 2.4rem;
+
+        & .btn {
+            padding: 0 1.2rem;
+        }
+
+        &>.select {
+            min-width: 220px;
+        }
+
+        &.apply-btn {
+            justify-content: center;
+            margin: 4.8rem 0 3.2rem;
+
+            .btn {
+                width: 10.8rem;
+            }
+        }
+
+    }
+
+    label,
+    .label {
+        display: block;
+        width: 15.6rem;
+        font-weight: 600;
+
+        &.hide {
+            width: 0;
+            margin-left: -2.4rem;
+        }
+    }
+
+    .inner-form {
+        width: calc(100% - 21.2rem);
+        margin: 1.6rem auto;
+        margin-right: 0;
+        background: var.$colorBg;
+        padding: 0 1.6rem;
+
+        label,
+        .label {
+            width: 7.4rem;
+            color: var.$colorGray1;
+        }
+
+        li {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: flex-start;
+            align-items: center;
+            grid-column-gap: 1.2rem;
+            margin: 1.6rem 0;
+
+            .input-text,
+            .select {
+                background: var.$colorWhite;
+            }
+
+            .input-text {
+                width: 70%;
+            }
+
+            .parameter-group {
+                display: block;
+                width: 70%;
+
+                li+li {
+                    margin-top: 1.2rem;
+                }
+            }
+
+            &:has(.parameter-group) {
+                align-items: flex-start;
+
+                .label {
+                    line-height: 3.4rem;
+                }
+            }
+
+            .parameter-group li {
+                display: flex;
+                flex-flow: row wrap;
+                margin: 0;
+
+                .input-text {
+                    width: 13rem;
+
+                    &.value {
+                        width: calc(80% - 13rem);
+                    }
+                }
+
+                label.hide {
+                    width: 0;
+                    margin-left: -1.2rem;
+                }
+            }
+        }
+    }
+}
+
+.sub-title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: .8rem;
+}

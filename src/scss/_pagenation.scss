@@ -1,0 +1,94 @@
+@use 'var';
+
+.pagenation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column-gap: 1.6rem;
+    padding: 1.6rem 0;
+
+    ul {
+        display: flex;
+        grid-column-gap: .8rem;
+
+        &.number-group {
+            li {
+                width: 3.2rem;
+                height: 3.2rem;
+                text-align: center;
+                border-radius: 2px;
+                color: var.$colorBlack;
+                position: relative;
+                box-sizing: border-box;
+
+                &:hover {
+                    background: #fff;
+                    font-weight: 500;
+                }
+
+                &:last-child .icon {
+                    display: flex;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                }
+
+                button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+
+
+                    &.active {
+                        color: var.$colorPrimary;
+                        font-weight: 600;
+                        position: relative;
+                    }
+
+                    &.active::before {
+                        display: block;
+                        content: '';
+                        width: 100%;
+                        height: 2px;
+                        background: var.$colorPrimary;
+
+                        @include var.hCenter;
+                        top: 100%;
+                    }
+
+                    &.active:hover {
+                        font-weight: 600;
+                    }
+
+                }
+
+                .search-page-modal {
+                    background: #fd565d;
+                    @include var.hCenter;
+                    top: calc(-150% - 8px);
+                    width: 100px;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: ease all .15s;
+
+                    &.open {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+
+                    &::after {
+                        display: block;
+                        content: '';
+                        width: 10px;
+                        height: 10px;
+                        background: #fd565d;
+
+                        @include var.hCenter;
+                        top: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
