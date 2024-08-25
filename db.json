@@ -61,11 +61,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
@@ -81,11 +77,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": true,
       "time": "Fri May 20 2022 10:00:00",
       "state": "faild",
@@ -101,11 +93,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": true,
       "time": "Fri May 20 2022 11:00:00",
       "state": "success",
@@ -121,11 +109,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": false,
       "time": "Fri May 20 2022 12:00:00",
       "state": "success",
@@ -141,11 +125,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
@@ -161,11 +141,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
@@ -181,11 +157,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
@@ -201,11 +173,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
@@ -221,11 +189,7 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
@@ -241,58 +205,14 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
-    },
-    {
-      "id": 10,
-      "agency": "기상청",
-      "collectItem": "풍향/풍속",
-      "schedule": "10분마다",
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
-      "isUse": false,
-      "time": "Fri May 20 2022 13:00:00",
-      "state": "success",
-      "log": "log success context"
     },
     {
       "id": 11,
-      "agency": "국립해양조사원",
-      "collectItem": "수온",
-      "schedule": "10분 마다",
-      "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
-      "isUse": true,
-      "time": "Fri May 20 2022 09:00:00",
-      "state": "collecting",
-      "log": null
-    },
-    {
-      "id": 12,
       "agency": "기상청",
       "collectItem": "풍향/풍속",
       "schedule": "10분마다",
@@ -301,15 +221,59 @@
       "apiKey": "zxcv1234",
       "apiUrl": "/abc/123",
       "apiExperiod": "2025-01-05",
-      "apiPrmt": [
-        "one",
-        "two",
-        "three"
-      ],
+      "apiPrmt": ["one", "two", "three"],
       "isUse": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
       "log": "log success context"
+    },
+    {
+      "id": 12,
+      "agency": "국립해양조사원",
+      "collectItem": "수온",
+      "schedule": "10분 마다",
+      "root": "/data/khoa/tide/",
+      "type": "api",
+      "apiKey": "zxcv1234",
+      "apiUrl": "/abc/123",
+      "apiExperiod": "2025-01-05",
+      "apiPrmt": ["one", "two", "three"],
+      "isUse": true,
+      "time": "Fri May 20 2022 09:00:00",
+      "state": "collecting",
+      "log": null
+    },
+    {
+      "id": 13,
+      "agency": "기상청",
+      "collectItem": "풍향/풍속",
+      "schedule": "10분마다",
+      "root": "/data/kma/wth",
+      "type": "api",
+      "apiKey": "zxcv1234",
+      "apiUrl": "/abc/123",
+      "apiExperiod": "2025-01-05",
+      "apiPrmt": ["one", "two", "three"],
+      "isUse": false,
+      "time": "Fri May 20 2022 13:00:00",
+      "state": "success",
+      "log": "log success context"
+    },
+    {
+      "id": 14,
+      "agency": "국립해양조사원",
+      "collectItem": "수온",
+      "schedule": "10분 마다",
+      "root": "/data/khoa/tide/",
+      "type": "api",
+      "apiKey": "zxcv1234",
+      "apiUrl": "/abc/123",
+      "apiExperiod": "2025-01-05",
+      "apiPrmt": ["one", "two", "three"],
+      "isUse": true,
+      "time": "Fri May 20 2022 09:00:00",
+      "state": "collecting",
+      "log": null
     }
   ]
 }

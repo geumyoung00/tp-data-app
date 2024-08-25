@@ -3,7 +3,7 @@ export default async function LogPage({
 }: {
   params: { id: string };
 }) {
-  const res = await fetch('http://192.168.0.157:9999/dataList');
+  const res = await fetch('http://localhost:9999/dataList');
   const datas = await res.json();
 
   const findDataLog = datas.find(

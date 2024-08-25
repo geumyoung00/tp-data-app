@@ -33,7 +33,7 @@ export default function Create() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('http://192.168.0.157:9999/dataList')
+    fetch('http://localhost:9999/dataList')
       .then((res) => res.json())
       .then((data) => setDatas(data));
   }, []);

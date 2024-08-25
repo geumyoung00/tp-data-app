@@ -21,7 +21,7 @@ export default function MngAgencies() {
   const addRef = useRef<HTMLTableCellElement | null>(null);
 
   const fetchList = () => {
-    fetch('http://192.168.0.157:9999/agencies')
+    fetch('http://localhost:9999/agencies')
       .then((res) => res.json())
       .then((data) => {
         if (data.length > 1) {
@@ -75,7 +75,7 @@ export default function MngAgencies() {
         };
 
         if (getAddValue) {
-          fetch('http://192.168.0.157:9999/agencies', addOptions)
+          fetch('http://localhost:9999/agencies', addOptions)
             .then((res) => res.json())
             .then(() => fetchList());
         } else alert('내용을 입력하세요.');
@@ -109,7 +109,7 @@ export default function MngAgencies() {
         } else {
           let allItem: string[] = [];
 
-          fetch(`http://192.168.0.157:9999/agencies/${id}`, SavOptions)
+          fetch(`http://localhost:9999/agencies/${id}`, SavOptions)
             .then((res) => res.json())
             .then(() => fetchList());
           refCurrent!
@@ -129,7 +129,7 @@ export default function MngAgencies() {
           break;
         } else {
           checkedList.forEach((idx) => {
-            fetch(`http://192.168.0.157:9999/agencies/${idx}`, removeOptions)
+            fetch(`http://localhost:9999/agencies/${idx}`, removeOptions)
               .then((res) => res.json())
               .then(() => {});
           });

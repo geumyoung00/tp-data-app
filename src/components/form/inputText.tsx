@@ -7,28 +7,32 @@ export default function InputText({
   label,
   size,
   hide,
-  style,
   focus,
   value,
+  type,
   disabled,
+  getValue,
 }: {
   pending?: string;
   label?: string;
   size?: string;
   hide?: string;
-  style?: string;
   focus?: boolean;
   value?: string;
+  type?: string;
   disabled?: boolean;
+  getValue?: (value: string) => void;
 }) {
   const [text, setText] = useState<string>();
+
   useEffect(() => {
     if (value) setText(value);
-  }, []);
+  }, [value]);
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
+  const changHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    getValue!(e.target.value);
   };
+
   return (
     <>
       {label ? (
@@ -38,17 +42,13 @@ export default function InputText({
       ) : (
         ''
       )}
-      <div
-        className={`input-text${size ? ' ' + size : ''}${
-          style ? ' ' + style : ''
-        }`}
-      >
+      <div className={`input-text${size ? ' ' + size : ''}`}>
         <input
-          type='text'
+          type={type ? type : 'text'}
           placeholder={pending}
           id={label}
           name={label}
-          onChange={onChangeHandler}
+          onChange={changHandler}
           defaultValue={text}
           autoFocus={focus ? true : false}
           disabled={disabled}

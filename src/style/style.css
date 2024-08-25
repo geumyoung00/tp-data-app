@@ -881,37 +881,24 @@
   display: flex;
   grid-column-gap: 0.8rem;
 }
+.pagenation ul li button.btn.disabled {
+  background: #d0d0da;
+}
+.pagenation ul li button.btn.disabled i svg {
+  fill: #9d9dad;
+}
 .pagenation ul.number-group li {
   width: 3.2rem;
   height: 3.2rem;
   text-align: center;
   border-radius: 2px;
   color: #2f3443;
+  position: relative;
   box-sizing: border-box;
 }
 .pagenation ul.number-group li:hover {
   background: #fff;
   font-weight: 500;
-}
-.pagenation ul.number-group li.active button {
-  color: #2853E5;
-  font-weight: 600;
-  position: relative;
-}
-.pagenation ul.number-group li.active button::before {
-  display: block;
-  content: "";
-  width: 100%;
-  height: 2px;
-  background: #2853E5;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 100%;
-}
-.pagenation ul.number-group li.active:hover {
-  font-weight: 600;
 }
 .pagenation ul.number-group li:last-child .icon {
   display: flex;
@@ -924,6 +911,80 @@
   align-items: center;
   width: 100%;
   height: 100%;
+}
+.pagenation ul.number-group li button.active {
+  color: #2853E5;
+  font-weight: 600;
+  position: relative;
+}
+.pagenation ul.number-group li button.active::before {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: #2853E5;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+}
+.pagenation ul.number-group li button.active:hover {
+  font-weight: 600;
+}
+.pagenation ul.number-group li .search-modal {
+  width: 130px;
+  background: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(-100% - 3.6rem);
+  padding: 1.2rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  display: none;
+  color: #6f6f80;
+}
+.pagenation ul.number-group li .search-modal.open {
+  display: block;
+}
+.pagenation ul.number-group li .search-modal form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.pagenation ul.number-group li .search-modal form::after {
+  display: block;
+  content: "";
+  background: transparent;
+  height: 0;
+  z-index: -1;
+  border-top: 6px solid;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  color: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(100% + 12px);
+}
+.pagenation ul.number-group li .search-modal input[type=number] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  width: 40px;
+  height: 2.8rem;
+  border: 1px solid #d0d0da;
+  border-radius: 2px;
+  text-align: center;
+}
+.pagenation ul.number-group li .search-modal button {
+  width: fit-content;
+  height: 2.8rem;
 }
 
 .modal {
@@ -1034,7 +1095,7 @@
   transform: translate(0);
   opacity: 0;
   visibility: hidden;
-  transition: ease 0.1s opacity, ease 0.1s visibility;
+  transition: ease 0.2s opacity, ease 0.2s visibility;
   height: 280px;
   width: 280px;
 }
@@ -1075,6 +1136,7 @@ body {
   min-height: calc(100vh - 9rem);
   padding: 0 4rem 6.4rem;
   box-sizing: border-box;
+  font-size: 1.6rem;
 }
 .contain.test {
   font-size: 2rem;

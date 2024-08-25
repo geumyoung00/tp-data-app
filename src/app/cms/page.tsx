@@ -2,13 +2,12 @@
 
 import Select from '@/src/components/form/select';
 import Button from '@/src/components/button';
-import Pagenation from '@/src/components/table/pagenation';
 import Add from '@/public/btnIcon/add.svg';
 import Link from 'next/link';
 import InputText from '@/src/components/form/inputText';
 import { useEffect, useState } from 'react';
-import TableTop from '@/src/components/table/top';
 import { useRouter } from 'next/navigation';
+import CmsTable from '@/src/components/table/cmsTable';
 
 interface dataInterface {
   id: number;
@@ -34,7 +33,7 @@ interface agencyInterface {
 
 export default function Cms() {
   const [agencyList, setAgencyList] = useState<string[]>([]);
-  const [datas, setDatas] = useState<dataInterface[] | null>(null);
+  const [datas, setDatas] = useState<dataInterface[]>([]);
   const [viewNum, setViewNum] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(1); //현재 페이지(선택된 페이지)
   const [startPage, setStartPage] = useState<number>(1);
@@ -48,7 +47,7 @@ export default function Cms() {
   const router = useRouter();
 
   const fetchAgencyList = () => {
-    fetch('http://192.168.0.157:9999/dataList')
+    fetch('http://localhost:9999/dataList')
       .then((res) => res.json())
       .then((result) => {
         const filterAgency: string[] = ['전체'];
@@ -127,75 +126,7 @@ export default function Cms() {
           </li>
         </ul>
       </form>
-      <div className='table'>
-        <TableTop viewCountHandler={(e) => viewCountHandler(e)} />
-        <table>
-          <colgroup>
-            <col width='60px' />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>기관</th>
-              <th>수집내용</th>
-              <th>수집형태</th>
-              <th>수집 스케줄</th>
-              <th>수집 폴더</th>
-              <th>상태</th>
-              <th>더 보기</th>
-            </tr>
-          </thead>
-          <tbody>
-            {datas ? (
-              currentPosts!.map((data: dataInterface) => {
-                return (
-                  <tr key={data.id}>
-                    <td>{data.id}</td>
-                    <td>{data.agency}</td>
-                    <td>{data.collectItem}</td>
-                    <td>{data.type}</td>
-                    <td>{data.schedule}</td>
-                    <td>{data.root}</td>
-                    <td>
-                      <div className={`tag ${data.state}`}>
-                        <span>
-                          {data.state === 'success'
-                            ? '수집성공'
-                            : data.state === 'faild'
-                            ? '수집 실패'
-                            : '수집 중'}
-                        </span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className='btn-group'>
-                        <Button
-                          label='수정'
-                          state='secondary'
-                          size='min'
-                          onClick={() => router.push(`/cms/edit/${data.id}`)}
-                        />
-                        <Button label='삭제' state='tertiary' size='min' />
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={8}>내용없음</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-        <Pagenation
-          totalPosts={totalPosts!}
-          totalPage={totalPage ? totalPage : 1}
-          viewNum={viewNum}
-          viewPageHandler={(e) => viewPageHandler(e)}
-          activePage={currentPage}
-        />
-      </div>
+      <CmsTable data={datas} />
     </div>
   );
 }

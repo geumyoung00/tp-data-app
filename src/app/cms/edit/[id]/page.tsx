@@ -52,7 +52,7 @@ export default function Edit() {
   // SELECT Options
 
   useEffect(() => {
-    fetch(`http://192.168.0.157:9999/dataList/${id}`)
+    fetch(`http://localhost:9999/dataList/${id}`)
       .then((res) => res.json())
       .then((data) => {
         return (
