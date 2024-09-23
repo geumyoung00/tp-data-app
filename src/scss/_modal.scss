@@ -76,6 +76,14 @@
                     border-top: 1px solid var.$colorGray2;
                 }
             }
+
+            .btn-group {
+                display: none;
+            }
+
+            .btn-group.in-modal {
+                display: flex;
+            }
         }
     }
 

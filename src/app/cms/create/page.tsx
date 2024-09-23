@@ -1,214 +1,270 @@
 'use client';
 
-import Select from '@/src/components/form/select';
 import Button from '@/src/components/button';
-import DatePicker from '@/src/components/form/date';
-import InputText from '@/src/components/form/inputText';
-import Radio from '@/src/components/form/radio';
+import ScheduleForm from '@/src/components/form/schedule';
+import Select from '@/src/components/form/select';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { fetchAgencies, agencyType } from '@/src/db/agencies';
+import { collectItemsType, fetchCollectItems } from '@/src/db/collectItems';
+import { SelectChange } from '@/src/action/form/select-change';
+import { useEffect, useRef, useState } from 'react';
+import { useFormState } from 'react-dom';
+import { createSetting } from '@/src/action/create-setting';
+import { scheduleType } from '@/src/db/date';
+import InputText from '@/src/components/form/inputText';
+import CollectTypeForm from '@/src/components/form/collectType';
+import Radio from '@/src/components/form/radio';
 
-interface dataInterface {
-  id: number;
-  agency: string;
-  collectItem: string;
-  schedule: string;
-  root: string;
-  type: string;
-  apiKey?: string;
-  apiUrl?: string;
-  apiExperiod?: string;
-  apiPrmt?: [string];
-  isUse: boolean;
-  time: string;
-  state: string;
-  log: string;
+type refsType = HTMLSelectElement | HTMLInputElement | HTMLDivElement;
+interface refsInterface {
+  id: string;
+  ref: refsType;
 }
 
-export default function Create() {
-  const [datas, setDatas] = useState<dataInterface[]>([]);
-  const [selectedAgency, setSelectedAgency] = useState<string | null>(null);
-  const [collections, setCollections] = useState<string[]>([]);
-  const router = useRouter();
+export default function CreateSettings() {
+  const [agencies, setAgencies] = useState<agencyType[]>();
+  const [collectItems, setCollectItems] = useState<collectItemsType[]>();
+  const [selectSchedule, setSelectSchedule] = useState<string>('');
+  const [selectType, setSelectType] = useState<string>('');
+  const [formState, createFormAction] = useFormState(createSetting, {
+    errors: {},
+  });
+  const errors = formState?.errors;
+  let formRefs = useRef<refsInterface[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:9999/dataList')
-      .then((res) => res.json())
-      .then((data) => setDatas(data));
+    fetchAgencies().then((data) => setAgencies(data));
+    fetchCollectItems().then((data) => setCollectItems(data));
   }, []);
 
-  datas.forEach((data) => {
-    if (!collections.includes(data.collectItem)) {
-      setCollections([data.collectItem, ...collections]);
+  useEffect(() => {
+    let errorsKey: string[] = [];
+    const errors = formState?.errors;
+    for (let key in formState?.errors) errorsKey.push(key);
+    if (errorsKey.length < 1) formRefs.current[0].ref.focus();
+  }, [formState]);
+
+  const formRefHandler = (id: string, ref: refsType) => {
+    let idx = formRefs.current.length;
+    let refkeys: string[] = [];
+    formRefs.current.forEach((el) => refkeys.push(el.id));
+    if (ref && idx < 1) {
+      formRefs.current[0] = { id, ref };
+      return;
+    } else if (ref && idx >= 1) {
+      const item = { id, ref };
+      formRefs.current.forEach((el) => {
+        if (el === item) return;
+        else formRefs.current[idx] = item;
+      });
     }
     return;
-  });
-
-  // *** 데이터 관리는 리덕스 써야 함 ***
-  // SELECT Options
-
-  const agengies: string[] = ['전체']; //기관
-  datas.forEach((data: dataInterface) => {
-    if (!agengies.includes(data.agency)) {
-      agengies.push(data.agency);
-    }
-    return;
-  });
-
-  const getAgencyHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target as HTMLSelectElement;
-    setSelectedAgency(value);
-
-    const filterAgencies = datas.filter((data) => data.agency === value);
-    const filterAgenciesCollections = filterAgencies.forEach((data) => {
-      console.log(data);
-      setCollections([]);
-    });
-    console.log(collections);
-    // collections.filter((item) => {
-    //   setCollections([]);
-    //   console.log(collections);
-    // });
   };
 
-  let schedule = ['']; // 수집 스케줄 타입
-  let collectType = []; //수집 형태
-  let exp = []; //API 유효기간
-  let parameters: any[] = [];
-  let isUsing = [
-    {
-      label: '사용',
-      name: 'isDataUse',
-      value: 'able',
-      checked: true,
-    },
-    {
-      label: '미사용',
-      name: 'isDataUse',
-      value: 'diable',
-      checked: false,
-    },
-  ];
+  const initSelectHandler = (
+    id: string,
+    e: React.MouseEvent<HTMLSelectElement, MouseEvent>
+  ) => {
+    const findIdx = formRefs.current.findIndex((el) => el.id === id);
+    const { value } = e.target as HTMLSelectElement;
+    SelectChange(formRefs.current[findIdx]!.ref, value);
+  };
 
   return (
     <div className='contain'>
       <h2 className='sub-title'>수집 데이터 등록</h2>
       <div className='form-area'>
-        <form>
-          <div className='row'>
-            <Select
-              label='기관'
-              options={agengies}
-              onChangeHandler={(e) => getAgencyHandler(e)}
-            />
-            <Link
-              href={'/cms/manage/mngAgencies'}
-              className='btn secondary'
-              scroll={false}
-            >
-              <span>등록 기관 관리</span>
+        <form action={createFormAction}>
+          <dl>
+            <dt>기관</dt>
+            <dd>
+              <Select hide='hide' label='agency' init='init'>
+                <select
+                  id={'agency'}
+                  name={'agency'}
+                  ref={(ref: HTMLSelectElement) => {
+                    formRefHandler('agency', ref);
+                  }}
+                  onClick={(e) => initSelectHandler('agency', e)}
+                >
+                  <option value='' hidden>
+                    기관 선택
+                  </option>
+                  {agencies?.map((item) => {
+                    return (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Select>
+              <Link
+                href={'/cms/manage/agencies'}
+                className='btn secondary'
+                scroll={false}
+              >
+                <span>등록 기관 관리</span>
+              </Link>
+              {errors?.agency ? (
+                <p className='valid-script'>{errors.agency?.join()}</p>
+              ) : (
+                ''
+              )}
+            </dd>
+          </dl>
+          <dl className='form-schedule'>
+            <dt>수집 항목</dt>
+            <dd>
+              <Select init='init' hide='hide' label='collectItem'>
+                <select
+                  name='collectItem'
+                  id='collectItem'
+                  ref={(ref: HTMLSelectElement) => {
+                    formRefHandler('collectItem', ref);
+                  }}
+                  onClick={(e) => initSelectHandler('collectItem', e)}
+                >
+                  <option value='' hidden>
+                    수집 항목 선택
+                  </option>
+                  {collectItems?.map((item) => {
+                    return (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Select>
+              <Link
+                href={`/cms/manage/collectItems`}
+                className='btn secondary'
+                scroll={false}
+              >
+                <span>수집 항목 관리</span>
+              </Link>
+              {errors?.collectItem ? (
+                <p className='valid-script'>{errors.collectItem?.join(' ')}</p>
+              ) : (
+                ''
+              )}
+            </dd>
+          </dl>
+          <dl>
+            <dt>수집 스케줄</dt>
+            <dd>
+              <Select label='collectSchedule' hide='hide' init='init'>
+                <select
+                  name='collectSchedule'
+                  id='collectSchedule'
+                  ref={(ref: HTMLSelectElement) => {
+                    formRefHandler('collectSchedule', ref);
+                  }}
+                  onClick={(e) => initSelectHandler('collectSchedule', e)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    setSelectSchedule(e.target.value);
+                  }}
+                >
+                  <option value='' hidden>
+                    수집 스케줄 선택
+                  </option>
+                  {scheduleType.map((item) => {
+                    return (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Select>
+
+              {selectSchedule.length > 1 ? (
+                <ScheduleForm
+                  type={selectSchedule}
+                  formRefHandler={formRefHandler}
+                  errors={errors}
+                />
+              ) : (
+                ''
+              )}
+
+              {/* vaildation scription  */}
+              {errors?.collectSchedule ? (
+                <p className='valid-script'>{errors.collectSchedule}</p>
+              ) : (
+                ''
+              )}
+            </dd>
+          </dl>
+          <dl>
+            <dt>수집 폴더</dt>
+            <dd>
+              <InputText label='root' hide='hide' size='wide'>
+                <input type='text' id='root' name='root' />
+              </InputText>
+              {errors?.root ? (
+                <p className='valid-script'>{errors.root?.join(' ')}</p>
+              ) : (
+                ''
+              )}
+            </dd>
+          </dl>
+          <dl>
+            <dt>수집 형태</dt>
+            <dd>
+              <Select label='collectType' hide='hide' init='init'>
+                <select
+                  name='collectType'
+                  id='collectType'
+                  ref={(ref: HTMLSelectElement) => {
+                    formRefHandler('collectType', ref);
+                  }}
+                  onClick={(e) => initSelectHandler('collectType', e)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    setSelectType(e.target.value);
+                  }}
+                >
+                  <option value='' hidden>
+                    수집 형태 선택
+                  </option>
+                  <option value='api'>API</option>
+                </select>
+              </Select>
+              {selectType ? (
+                <CollectTypeForm type={selectType} error={errors!} />
+              ) : errors?.collectType ? (
+                <p className='valid-script'>{errors.collectType}</p>
+              ) : (
+                ''
+              )}
+            </dd>
+          </dl>
+          <dl>
+            <dt>사용 여부</dt>
+            <dd>
+              <Radio
+                options={[
+                  {
+                    label: '사용',
+                    name: 'isUsed',
+                    value: 'use',
+                    checked: true,
+                  },
+                  { label: '미사용', name: 'isUsed', value: 'unused' },
+                ]}
+              />
+              {errors?.isUsed ? (
+                <p className='valid-script'>{errors?.isUsed}</p>
+              ) : null}
+            </dd>
+          </dl>
+
+          <div className='apply-btn'>
+            <Link href={'/cms'} className='btn secondary'>
+              <span>목록</span>
             </Link>
-          </div>
-          <div className='row'>
-            <Select label='수집 항목' options={collections} />
-            <Link
-              href={`/cms/manage/mngContents`}
-              className='btn secondary'
-              scroll={false}
-            >
-              <span>수집 항목 관리</span>
-            </Link>
-          </div>
-          <div className='row'>
-            <Select label='수집 스케줄' options={[]} />
-            <DatePicker period='time' hide='hide' />
-          </div>
-          <div className='row'>
-            <InputText label='수집 폴더' size='wide' />
-          </div>
-          <div className='row'>
-            <Select label='수집형태' options={[]} />
-            <ul className='inner-form'>
-              <li>
-                <InputText label='KEY' />
-              </li>
-              <li>
-                <InputText label='URL' />
-              </li>
-              <li>
-                <Select label='유효기간' options={[]} />
-              </li>
-              <li>
-                <p className='label'>파라미터</p>
-                <ul className='parameter-group'>
-                  {/* 등록 폼 default*/}
-                  <li className='apply'>
-                    <InputText
-                      size='min key'
-                      label='parameterKey'
-                      hide='hide'
-                    />
-                    <InputText
-                      size='min value'
-                      label='parameterValue'
-                      hide='hide'
-                    />
-                    <Button
-                      label='추가'
-                      icon='add'
-                      type='icon-only'
-                      size='min'
-                    />
-                  </li>
-                  {/* 지금 등록한 목록 보여주기 */}
-                  {parameters ? (
-                    ''
-                  ) : (
-                    <li className='delete'>
-                      <InputText
-                        size='min key'
-                        label='parameterKey'
-                        hide='hide'
-                      />
-                      <InputText
-                        size='min value'
-                        label='parameterValue'
-                        hide='hide'
-                      />
-                      <Button
-                        label='삭제'
-                        icon='remove'
-                        type='icon-only'
-                        size='min'
-                        state='tertiary'
-                      />
-                    </li>
-                  )}
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div className='row'>
-            <p className='label'>사용 여부</p>
-            <Radio options={isUsing} />
-          </div>
-          <div className='row apply-btn'>
-            <Button
-              label='목록'
-              state='secondary'
-              onClick={(e) => {
-                e.preventDefault();
-                router.back();
-              }}
-            />
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                router.back();
-              }}
-              label='등록'
-            />
+            <Button label='등록' />
           </div>
         </form>
       </div>

@@ -17,6 +17,7 @@ export default function Radio({
             <label key={option.name + option.value}>
               <input
                 type='radio'
+                id={option.name}
                 name={option.name}
                 value={option.value}
                 defaultChecked={option.checked}

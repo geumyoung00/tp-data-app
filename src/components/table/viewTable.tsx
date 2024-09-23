@@ -5,18 +5,9 @@ import Pagenation from './pagenation';
 import TableTop from './tableTop';
 import Link from 'next/link';
 import Button from '../button';
+import { dataType } from '@/src/db/data';
 
-interface dataInterface {
-  agency: string;
-  collectItem: string;
-  schedule: string;
-  root: string;
-  type: string;
-  state: string;
-  log: string;
-}
-
-export default function ViewTable({ data }: { data: dataInterface[] }) {
+export default function ViewTable({ data }: { data: dataType[] }) {
   const [postCount, setPostCount] = useState<number>(5); //보여줄 게시글 수
   const [page, setPage] = useState<number>(1); // 선택된 페이지(현재)
   let startIdx: number = (page - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
@@ -79,7 +70,7 @@ export default function ViewTable({ data }: { data: dataInterface[] }) {
             return (
               <tr key={idx}>
                 <td>{el.agency}</td>
-                <td>{el.collectItem}</td>
+                <td>{el.collectItems}</td>
                 <td>{el.type}</td>
                 <td>{el.root}</td>
                 <td>

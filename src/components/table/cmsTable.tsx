@@ -1,23 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Pagenation from './pagenation';
 import TableTop from './tableTop';
-import Link from 'next/link';
 import Button from '../button';
-``;
+import { settingsType } from '@/src/db/settings';
+import Link from 'next/link';
 
-interface dataInterface {
-  agency: string;
-  collectItem: string;
-  schedule: string;
-  root: string;
-  type: string;
-  state: string;
-  log: string;
-}
-
-export default function CmsTable({ data }: { data: dataInterface[] }) {
+export default function CmsTable({
+  data,
+  settingHandler,
+}: {
+  data: settingsType[];
+  settingHandler?: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string
+  ) => void;
+}) {
   const [postCount, setPostCount] = useState<number>(5); //보여줄 게시글 수
   const [page, setPage] = useState<number>(1); // 선택된 페이지(현재)
   let startIdx: number = (page - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
@@ -54,51 +53,115 @@ export default function CmsTable({ data }: { data: dataInterface[] }) {
     }
   };
 
+  const searchPageHandler = (val: string) => {
+    setPage(parseInt(val));
+  };
+
   return (
     <div className='table'>
-      <TableTop viewCountHandler={(e) => viewCountHandler(e)} />
+      <TableTop
+        viewCountHandler={(e) => viewCountHandler(e)}
+        pageInfo={{ page: page, totalPages: totalPages }}
+      />
       <table>
         <thead>
           <tr>
+            <th>번호</th>
             <th>기관</th>
             <th>수집내용</th>
             <th>수집형태</th>
+            <th>수집 스케줄</th>
             <th>수집폴더</th>
-            <th>상태</th>
-            <th>상세 로그</th>
+            <th>사용여부</th>
+            <th>더보기</th>
           </tr>
         </thead>
         <tbody>
           {posts.map((el, idx) => {
+            const { schedule } = el;
+            const { time, date, startDate, endDate } = schedule;
+            let weeks: string[] = [];
+            schedule.weeks?.forEach((el) => {
+              el === 'mon'
+                ? weeks.push('월')
+                : el === 'tue'
+                ? weeks.push('화')
+                : el === 'wed'
+                ? weeks.push('수')
+                : el === 'thu'
+                ? weeks.push('목')
+                : el === 'fri'
+                ? weeks.push('금')
+                : el === 'sat'
+                ? weeks.push('토')
+                : el === 'sun'
+                ? weeks.push('일')
+                : '';
+            });
+            const scheduleType =
+              schedule.type === 'daily' ||
+              (schedule.type === 'period' && !schedule.weeks)
+                ? '매일'
+                : schedule.type === 'weekly'
+                ? '매주'
+                : '';
+
             return (
               <tr key={idx}>
+                <td>{el.id}</td>
                 <td>{el.agency}</td>
                 <td>{el.collectItem}</td>
                 <td>{el.type}</td>
+                <td>
+                  {date ? (
+                    <p>
+                      {new Date(date).toLocaleDateString('kr-Ko', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </p>
+                  ) : (
+                    ''
+                  )}
+                  {startDate ? (
+                    <p>
+                      {startDate} ~ {endDate}
+                    </p>
+                  ) : (
+                    ''
+                  )}
+                  {`${scheduleType}
+                  ${weeks ? ' ' + weeks.join(', ') : ''}
+                  ${time}`}
+                </td>
                 <td>{el.root}</td>
                 <td>
-                  <div className={`tag ${el.state}`}>
-                    <span>
-                      {el.state === 'success'
-                        ? '수집성공'
-                        : el.state === 'faild'
-                        ? '수집 실패'
-                        : '수집 중'}
-                    </span>
-                  </div>
+                  {el.isUsed ? (
+                    <div className={`tag`}>
+                      <span>사용중</span>
+                    </div>
+                  ) : (
+                    <div className={`tag stop`}>
+                      <span>사용중지</span>
+                    </div>
+                  )}
                 </td>
                 <td>
-                  {el.log ? (
-                    <Link
-                      href={`/view/${idx + 1}`}
-                      className='btn min secondary'
-                      scroll={false}
-                    >
-                      <span>확인하기</span>
-                    </Link>
-                  ) : (
-                    <Button label='확인하기' state='disabled' size='min' />
-                  )}
+                  <div className='btn-group'>
+                    <Button
+                      label='수정'
+                      state='secondary'
+                      size='min'
+                      onClick={(e) => settingHandler!(e, el.id)}
+                    />
+                    <Button
+                      label='삭제'
+                      state='tertiary'
+                      size='min'
+                      onClick={(e) => settingHandler!(e, el.id)}
+                    />
+                  </div>
                 </td>
               </tr>
             );
@@ -111,6 +174,7 @@ export default function CmsTable({ data }: { data: dataInterface[] }) {
         postCount={postCount}
         activePage={page}
         viewPageHandler={(e) => viewPageHandler(e)}
+        searchPageHandler={(val) => searchPageHandler(val)}
       />
     </div>
   );

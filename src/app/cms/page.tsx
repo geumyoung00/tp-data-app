@@ -8,110 +8,68 @@ import InputText from '@/src/components/form/inputText';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CmsTable from '@/src/components/table/cmsTable';
-
-interface dataInterface {
-  id: number;
-  agency: string;
-  collectItem: string;
-  schedule: string;
-  root: string;
-  type: string;
-  apiKey?: string;
-  apiUrl?: string;
-  apiExperiod?: string;
-  apiPrmt?: [string];
-  isUse: boolean;
-  time: string;
-  state: string;
-  log: string;
-}
-
-interface agencyInterface {
-  id: number | string;
-  name: string;
-}
+import { agencyType, fetchAgencies } from '@/src/db/agencies';
+import { fetchSettings, settingsType } from '@/src/db/settings';
 
 export default function Cms() {
-  const [agencyList, setAgencyList] = useState<string[]>([]);
-  const [datas, setDatas] = useState<dataInterface[]>([]);
-  const [viewNum, setViewNum] = useState<number>(5);
-  const [currentPage, setCurrentPage] = useState<number>(1); //현재 페이지(선택된 페이지)
-  const [startPage, setStartPage] = useState<number>(1);
-  const totalPosts = datas?.length;
-  const offset = (currentPage - 1) * viewNum; //현재 페이지의 첫 게시물 인덱스 (0, 10, 20, ...)
-  const totalPage = Math.ceil(totalPosts! / viewNum); // 올림계산된 총 페이지 수
-  const noPrev = startPage === 1; //이전 페이지가 없는 경우
-  const noNext = startPage + viewNum - 1 >= totalPage;
-  const currentPosts = datas?.slice(offset, offset + viewNum);
-
+  const [agencies, setAgencies] = useState<agencyType[]>([]);
+  const [settings, setSettings] = useState<settingsType[]>([]);
   const router = useRouter();
 
-  const fetchAgencyList = () => {
-    fetch('http://localhost:9999/dataList')
-      .then((res) => res.json())
-      .then((result) => {
-        const filterAgency: string[] = ['전체'];
-        result.forEach((el: dataInterface) => {
-          if (filterAgency.includes(el.agency)) {
-            return;
-          } else {
-            return filterAgency.push(el.agency);
-          }
-        });
-        return setDatas(result), setAgencyList(filterAgency);
-      });
-  };
+  useEffect(() => {
+    fetchAgencies().then((data) =>
+      setAgencies([{ id: 'all', name: '전체' }, ...data])
+    );
+    fetchSettings().then((data) => setSettings(data));
+  }, []);
 
-  const viewCountHandler = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setViewNum(parseInt(e.target.value));
+  const settingHandler = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    id: string
+  ) => {
+    const target = e.target as HTMLElement;
+    const type = target.innerText === '수정' ? 'edit' : 'delete';
 
-  const viewPageHandler = ({ value }: EventTarget & HTMLButtonElement) => {
-    switch (value) {
-      case 'first':
-        setCurrentPage(1);
+    switch (type) {
+      case 'edit':
+        router.push(`/cms/edit/${id}`);
+        console.log(id);
         break;
 
-      case 'prev':
-        if (currentPage === 1) {
-          return;
-        }
-        setCurrentPage(currentPage - 1);
-        break;
-
-      case 'next':
-        if (currentPage === totalPage) {
-          return;
-        }
-        setCurrentPage(currentPage + 1);
-        break;
-
-      case 'last':
-        setCurrentPage(totalPage);
-        break;
-
-      case 'search':
-        console.log(value + ' is search');
-        break;
+      case 'delete':
+        const deleteOptions = { method: 'DELETE' };
+        if (confirm(`정말 ${id} 설정을 삭제하시겠습니까?`)) {
+          fetch(`http://localhost:9999/settings/${id}`, deleteOptions).then(
+            (res) => res.json()
+          );
+        } else return;
 
       default:
-        setCurrentPage(parseInt(value));
         break;
     }
   };
-
-  useEffect(() => {
-    fetchAgencyList();
-  }, []);
 
   return (
     <div className='contain'>
       <form>
         <ul className='filter-bar'>
           <li>
-            <Select label='기관 선택' options={agencyList} />
+            <Select label='기관 선택'>
+              <select name='searchAgency' id='searchAgency'>
+                {agencies.map((item) => {
+                  return <option key={item.id}>{item.name}</option>;
+                })}
+              </select>
+            </Select>
           </li>
           <li>
-            <InputText pending='검색어를 입력해주세요.' />
+            <InputText label='searchKeyword' hide='hide'>
+              <input
+                type='text'
+                name='searchKeyword'
+                placeholder='검색어를 입력하세요.'
+              />
+            </InputText>
           </li>
           <li>
             <Button label='검색' />
@@ -126,7 +84,10 @@ export default function Cms() {
           </li>
         </ul>
       </form>
-      <CmsTable data={datas} />
+      <CmsTable
+        data={settings}
+        settingHandler={(e, id) => settingHandler(e, id)}
+      />
     </div>
   );
 }

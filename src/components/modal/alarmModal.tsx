@@ -6,14 +6,14 @@ import Button from '../button';
 import Alarm from '@/public/alarm.svg';
 
 export default function AlarmModal() {
-  const modalRef = useRef<any>(null);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [newNotice, setNewNotice] = useState<number | null>(2);
-
+  const modalRef = useRef<HTMLLIElement>(null);
   const showModalHandler = (e: MouseEvent) => {
     // useRef current 밖을 클릭 시 드롭메뉴 닫힘
     e.preventDefault();
-    if (isShowModal && !modalRef.current!.contains(e.target)) {
+    const target = e.target as HTMLElement;
+    if (isShowModal && !modalRef.current!.contains(target)) {
       setIsShowModal(false);
       return;
     } else return;
@@ -34,7 +34,7 @@ export default function AlarmModal() {
           <Alarm />
         </i>
       </button>
-      <div ref={modalRef} className={`modal${isShowModal ? ' open' : ''}`}>
+      <div className={`modal${isShowModal ? ' open' : ''}`}>
         <div className='contents'>
           <div className='top'>
             <h5>Modal Title</h5>

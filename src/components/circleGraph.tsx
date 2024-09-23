@@ -1,5 +1,3 @@
-import '@/src/scss/_common.scss';
-
 export default function CircleGraph() {
   return (
     <div className='graph-wrap'>

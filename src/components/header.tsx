@@ -17,7 +17,9 @@ export default function Header() {
   return (
     <div className='header'>
       <h1>
-        <Link href={'/'}>자료 수집 현황</Link>
+        <Link href={'/'} title='홈으로'>
+          {pathname.includes('cms') ? '자료 수집 설정' : '자료 수집 현황'}
+        </Link>
       </h1>
       <ol className='user-menu'>
         <AlarmModal />
@@ -29,7 +31,7 @@ export default function Header() {
                 href={'/view'}
                 title='자료 수집 시스템 바로가기'
               >
-                <p className='hide'>자료 수집 시스템</p>
+                <p className='hide'>자료 수집 시스템 바로가기</p>
                 <i>
                   <View />
                 </i>
@@ -40,7 +42,7 @@ export default function Header() {
                 href={'/cms'}
                 title='자료 수집 설정 바로가기'
               >
-                <p className='hide'>자료 수집 설정</p>
+                <p className='hide'>자료 수집 설정 바로가기</p>
                 <i>
                   <Setting />
                 </i>

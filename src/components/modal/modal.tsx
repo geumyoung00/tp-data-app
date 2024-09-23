@@ -17,7 +17,6 @@ export default function Modal({
   const [isOpen, setIsOpen] = useState(true);
 
   const closeModalHandler = (e: MouseEvent) => {
-    e.preventDefault();
     if (isOpen && !modalRef.current.contains(e.target)) {
       setIsOpen(false);
       router.back();

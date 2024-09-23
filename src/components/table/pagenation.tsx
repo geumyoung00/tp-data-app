@@ -1,8 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import '@/src/scss/_common.scss';
-import '@/src/scss/_pagenation.scss';
 import First from '@/public/btnIcon/first.svg';
 import Last from '@/public/btnIcon/last.svg';
 import Prev from '@/public/btnIcon/prev.svg';

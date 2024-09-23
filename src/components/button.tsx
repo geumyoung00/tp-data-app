@@ -28,7 +28,7 @@ export default function Button({
   type?: string;
   icon?: string;
   style?: string;
-  onClick?: (e: React.FormEvent) => void;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }) {
   return (
     <>

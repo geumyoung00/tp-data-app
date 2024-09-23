@@ -66,24 +66,15 @@
         }
     }
 
+    &.init {
+        select {
+            color: var.$colorGray2;
+        }
+    }
 }
 
 .date-picker {
-    display: flex;
-    flex-flow: row wrap;
-    grid-column-gap: 1.2rem;
-
-    li.tide {
-        color: var.$colorGray2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 500;
-    }
-
-    li {
-        position: relative;
-    }
+    position: relative;
 
     input[type='date'] {
         font-size: 1.6rem;
@@ -132,19 +123,37 @@
             display: flex;
             flex-flow: row wrap;
             align-items: center;
-
-            label {
-                margin-left: 0;
-            }
-
-            p {
-                margin-left: .8rem
-            }
-
-            .select select {
-                min-width: 0;
-            }
         }
+    }
+
+    .form-area .inner-form & {
+        display: flex;
+
+        li {
+            margin: 0;
+            grid-column-gap: 0;
+        }
+
+        label.hide,
+        .label.hide {
+            width: 0;
+            margin-left: 0;
+        }
+    }
+}
+
+
+.time {
+    label {
+        margin-left: 0;
+    }
+
+    p {
+        margin-left: .8rem
+    }
+
+    .select select {
+        min-width: 0;
     }
 }
 
@@ -162,32 +171,30 @@
         text-indent: 1.2rem;
     }
 
+    input[type="text"]:read-only {
+        background: var.$colorBg;
+        color: var.$colorGray1;
+        outline: none;
+    }
+
     input[type="text"]::placeholder {
         color: var.$colorGray2;
     }
 
     &.min {
         input[type="text"] {
-            height: 3.2rem;
+            height: 3rem;
         }
     }
 
     &.wide {
-        width: 60%;
+        width: 708px;
     }
 
     &.inner {
         width: calc(99% - 1.2rem);
         margin: 0 auto;
 
-        .center:has(&) label.hide {
-            position: absolute;
-        }
-
-        input[type=text] {
-            width: 100%;
-            margin-left: -1.2rem;
-        }
     }
 }
 
@@ -204,6 +211,7 @@
         justify-content: flex-start;
         align-content: center;
         color: var.$colorBlack;
+        font-weight: 500;
         cursor: pointer;
 
         & span {
@@ -215,6 +223,10 @@
         &:has([type="radio"]:disabled) {
             cursor: not-allowed;
         }
+    }
+
+    label+label {
+        margin-left: 4.8rem;
     }
 
     [type="radio"],
@@ -271,10 +283,7 @@
     align-items: center;
     cursor: pointer;
     width: auto;
-
-    &.center {
-        width: 20px;
-    }
+    margin-right: 1.6rem;
 
     input[type="checkbox"] {
         width: 0;
@@ -292,9 +301,10 @@
 
             span {
                 display: block;
-                width: 100%;
+                width: auto;
                 padding-left: 20px;
                 font-weight: 500;
+                margin-left: 8px;
             }
 
             &::before {
@@ -314,8 +324,8 @@
                 display: flex;
                 width: 12px;
                 height: 8px;
-                position: absolute;
-                top: 7px;
+                @include var.vCenter;
+                top: 52%;
                 left: 4px;
 
                 svg {
@@ -367,8 +377,22 @@
     }
 
     &.center {
+        width: 20px;
         justify-content: center;
         margin: 0 auto;
+
+        input[type="checkbox"] {
+            &+label {
+                span {
+                    margin-left: 0;
+                    width: 0;
+                }
+
+                .icon {
+                    @include var.center;
+                }
+            }
+        }
     }
 }
 
@@ -380,111 +404,199 @@
     line-height: 1.4;
     box-sizing: border-box;
 
-    .row {
+    dl {
         display: flex;
         flex-flow: row wrap;
         justify-content: flex-start;
         align-items: center;
         grid-column-gap: 2.4rem;
         margin-bottom: 2.4rem;
+        color: var.$colorBlack;
+
+        &:has(.valid-script) {
+            margin-bottom: 1.2rem;
+        }
 
         & .btn {
             padding: 0 1.2rem;
         }
 
-        &>.select {
-            min-width: 220px;
+        dt {
+            width: calc(18rem - 2.4rem);
+            line-height: 4.2rem;
+            font-weight: 600;
+            align-self: flex-start;
         }
 
-        &.apply-btn {
-            justify-content: center;
-            margin: 4.8rem 0 3.2rem;
+        dd {
+            display: flex;
+            flex-flow: row wrap;
+            grid-column-gap: 2.4rem;
+            width: calc(100% - 180px);
 
-            .btn {
-                width: 10.8rem;
+            .select {
+                min-width: 220px;
+            }
+
+            .input-text,
+            .radio {
+                position: relative;
+                left: 2.4rem;
+            }
+
+            .valid-script {
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: var.$colorRed;
+                width: calc(100% - 125px);
+                margin-top: .8rem;
+                position: relative;
+                left: 2.4rem;
+            }
+
+            .valid-script::before {
+                display: inline-block;
+                content: '*';
+                line-height: 1;
+                position: relative;
+                top: 2px;
+                margin-right: 4px;
+            }
+
+            &:has(.inner-form) {
+                position: relative;
+                align-items: flex-start;
+                width: calc(100% - 204px);
+
+                .inner-form .select {
+                    min-width: 0;
+
+                    select {
+                        min-width: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .schedule-form {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        grid-column-gap: 1rem;
+
+        .select {
+            min-width: 0;
+
+            select {
+                min-width: 0;
             }
         }
 
-    }
+        p.text {
 
-    label,
-    .label {
-        display: block;
-        width: 15.6rem;
-        font-weight: 600;
-
-        &.hide {
-            width: 0;
-            margin-left: -2.4rem;
+            font-weight: 500;
+            color: var.$colorGray1;
         }
     }
 
     .inner-form {
-        width: calc(100% - 21.2rem);
-        margin: 1.6rem auto;
-        margin-right: 0;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        grid-column-gap: 1rem;
+        width: 100%;
+        font-size: 1.6rem;
+        color: var.$colorGray1;
         background: var.$colorBg;
-        padding: 0 1.6rem;
+        padding: 1.6rem;
+        border-radius: 2px;
+        box-sizing: border-box;
+        margin-top: 1.6rem;
+        position: relative;
+        left: 2.4rem;
 
-        label,
         .label {
-            width: 7.4rem;
-            color: var.$colorGray1;
+            display: block;
+            width: 13rem;
+            font-weight: 600;
         }
 
-        li {
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: flex-start;
-            align-items: center;
-            grid-column-gap: 1.2rem;
-            margin: 1.6rem 0;
+        .input-text {
+            width: 70%;
+        }
 
-            .input-text,
-            .select {
-                background: var.$colorWhite;
-            }
+        &.block {
+            display: block;
 
-            .input-text {
-                width: 70%;
-            }
+            dl {
+                margin-bottom: 1.6rem;
 
-            .parameter-group {
-                display: block;
-                width: 70%;
-
-                li+li {
-                    margin-top: 1.2rem;
+                dt {
+                    color: var.$colorGray1;
+                    width: 80px;
                 }
-            }
 
-            &:has(.parameter-group) {
-                align-items: flex-start;
+                dd {
+                    width: calc(100% - 120px);
 
-                .label {
-                    line-height: 3.4rem;
-                }
-            }
+                    .select {
+                        background: var.$colorWhite;
+                    }
 
-            .parameter-group li {
-                display: flex;
-                flex-flow: row wrap;
-                margin: 0;
+                    .parameters {
+                        display: block;
+                        width: 70%;
+                    }
 
-                .input-text {
-                    width: 13rem;
+                    .parameters li {
+                        display: grid;
+                        grid-template-areas: "key value value btn";
+                        grid-template-columns: 1fr 1fr 1fr 3.2rem;
+                        grid-column-gap: 8px;
+                        position: relative;
+                        left: 2.4rem;
+                        margin-bottom: 1.2rem;
 
-                    &.value {
-                        width: calc(80% - 13rem);
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        .input-text {
+                            width: 100%;
+                            position: initial;
+                            grid-area: value;
+                        }
+
+                        .input-text:first-child {
+                            grid-area: key;
+                        }
                     }
                 }
 
-                label.hide {
-                    width: 0;
-                    margin-left: -1.2rem;
+                &:has(.parameters) {
+                    dt {
+                        line-height: 3.2rem;
+                    }
                 }
             }
+
         }
+    }
+
+    .apply-btn {
+        display: flex;
+        justify-content: center;
+        margin: 4.8rem 0 3.2rem;
+        grid-column-gap: 2.4rem;
+
+        .btn {
+            width: 10.8rem;
+        }
+    }
+
+    .checkbox-group {
+        display: flex;
     }
 }
 
