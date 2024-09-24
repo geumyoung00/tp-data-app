@@ -68,10 +68,7 @@
       "collectItem": "풍향/풍속",
       "schedule": {
         "type": "weekly",
-        "weeks": [
-          "mon",
-          "thu"
-        ],
+        "weeks": ["mon", "thu"],
         "time": "02:25"
       },
       "root": "/data/khoa/wind/",
@@ -96,7 +93,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true
+      "isUsed": true
     },
     {
       "id": 3,
@@ -129,7 +126,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true
+      "isUsed": true
     },
     {
       "id": 4,
@@ -139,10 +136,7 @@
         "type": "period",
         "startDate": "2024-04-01",
         "endDate": "2024-07-30",
-        "weeks": [
-          "tue",
-          "sat"
-        ],
+        "weeks": ["tue", "sat"],
         "time": "20:30"
       },
       "root": "/data/nosc/GOCI-II",
@@ -167,7 +161,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false
+      "isUsed": false
     },
     {
       "id": 5,
@@ -201,7 +195,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false
+      "isUsed": false
     },
     {
       "id": 6,
@@ -233,7 +227,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true
+      "isUsed": true
     },
     {
       "id": 7,
@@ -265,29 +259,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false
-    },
-    {
-      "agency": "국립해양조사원",
-      "collectItem": "실시간 조위",
-      "schedule": {
-        "type": "실시간 조위",
-        "time": "05:05"
-      },
-      "root": "/tset",
-      "type": "api",
-      "isUse": "use",
-      "apiKey": "testApi",
-      "apiUrl": "http://test.jp",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": " value",
-          "value": " value"
-        }
-      ],
-      "id": 8
+      "isUsed": false
     }
   ],
   "data": [
@@ -297,12 +269,7 @@
       "collectItem": "실시간 조위",
       "schedule": {
         "type": "weekly",
-        "weeks": [
-          "mon",
-          "wed",
-          "fri",
-          "sun"
-        ],
+        "weeks": ["mon", "wed", "fri", "sun"],
         "time": "12:25"
       },
       "root": "/data/khoa/tide/",
@@ -327,7 +294,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
@@ -362,7 +329,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 10:00:00",
       "state": "faild",
       "log": "log faild context"
@@ -397,7 +364,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 11:00:00",
       "state": "success",
       "log": "log success context"
@@ -432,7 +399,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false,
+      "isUsed": false,
       "time": "Fri May 20 2022 12:00:00",
       "state": "success",
       "log": "log success context"
@@ -467,7 +434,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false,
+      "isUsed": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
       "log": "log success context"
@@ -502,7 +469,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
@@ -537,7 +504,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false,
+      "isUsed": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
       "log": "log success context"
@@ -572,7 +539,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
@@ -607,7 +574,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false,
+      "isUsed": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
       "log": "log success context"
@@ -642,7 +609,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
@@ -677,7 +644,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false,
+      "isUsed": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
       "log": "log success context"
@@ -712,7 +679,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
@@ -747,7 +714,7 @@
           "value": "value three"
         }
       ],
-      "isUse": false,
+      "isUsed": false,
       "time": "Fri May 20 2022 13:00:00",
       "state": "success",
       "log": "log success context"
@@ -782,7 +749,7 @@
           "value": "value three"
         }
       ],
-      "isUse": true,
+      "isUsed": true,
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null

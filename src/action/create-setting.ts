@@ -323,6 +323,7 @@ export async function createSetting(
       if (!result?.success) {
         return { errors: result?.error.flatten().fieldErrors };
       }
+
       mergeParse = { ...commonParse, ...apiParse, ...dailyParse };
       postSettingAction(mergeParse);
 
@@ -344,6 +345,9 @@ export async function createSetting(
         return { errors: result?.error.flatten().fieldErrors };
       }
 
+      mergeParse = { ...commonParse, ...apiParse, ...weeklyParse };
+      postSettingAction(mergeParse);
+
       break;
 
     case 'day':
@@ -357,6 +361,9 @@ export async function createSetting(
       if (!result?.success) {
         return { errors: result?.error.flatten().fieldErrors };
       }
+
+      mergeParse = { ...commonParse, ...apiParse, ...dayParse };
+      postSettingAction(mergeParse);
 
       break;
 
@@ -385,8 +392,16 @@ export async function createSetting(
         return { errors: result?.error.flatten().fieldErrors };
       }
 
+      inSchedule === 'periodDaily'
+        ? (mergeParse = { ...commonParse, ...apiParse, ...periodParse })
+        : (mergeParse = { ...commonParse, ...apiParse, ...periodWeeklyParse });
+
+      postSettingAction(mergeParse);
+
       break;
   }
+
+  console.log(formData);
 
   try {
   } catch (error) {

@@ -1,11 +1,10 @@
 'use client';
 
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import Pagenation from './pagenation';
 import TableTop from './tableTop';
 import Button from '../button';
 import { settingsType } from '@/src/db/settings';
-import Link from 'next/link';
 
 export default function CmsTable({
   data,
@@ -57,6 +56,8 @@ export default function CmsTable({
     setPage(parseInt(val));
   };
 
+  let itemIdx = startIdx;
+
   return (
     <div className='table'>
       <TableTop
@@ -64,6 +65,9 @@ export default function CmsTable({
         pageInfo={{ page: page, totalPages: totalPages }}
       />
       <table>
+        <colgroup>
+          <col width={60} />
+        </colgroup>
         <thead>
           <tr>
             <th>번호</th>
@@ -106,9 +110,11 @@ export default function CmsTable({
                 ? '매주'
                 : '';
 
+            itemIdx++;
+
             return (
               <tr key={idx}>
-                <td>{el.id}</td>
+                <td>{itemIdx}</td>
                 <td>{el.agency}</td>
                 <td>{el.collectItem}</td>
                 <td>{el.type}</td>

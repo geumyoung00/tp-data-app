@@ -1,5 +1,6 @@
 'use server';
 
+import { weeks } from '../db/date';
 import { parseType } from './create-setting';
 
 async function postSettingAction(parse: parseType) {
@@ -12,14 +13,44 @@ async function postSettingAction(parse: parseType) {
     isUse: parse.isUsed,
   };
 
-  if (parse.collectSchedule === 'daily') {
-    newSetting = {
-      ...newSetting,
-      schedule: {
-        type: parse.collectItem,
-        time: parse.dailyMinutes + ':' + parse.dailyMinutes,
-      },
-    };
+  switch (parse.collectSchedule) {
+    case 'daily':
+      newSetting = {
+        ...newSetting,
+        schedule: {
+          type: parse.collectSchedule,
+          time: parse.dailyMinutes + ':' + parse.dailyMinutes,
+        },
+      };
+    case 'weekly':
+      newSetting = {
+        ...newSetting,
+        schedule: {
+          type: parse.collectSchedule,
+          weeks: parse.weeklyChecks,
+          time: parse.weeklyTime + ':' + parse.weeklyMinutes,
+        },
+      };
+    case 'day':
+      newSetting = {
+        ...newSetting,
+        schedule: {
+          type: parse.collectSchedule,
+          date: parse.dayDate,
+          time: parse.dayTime + ':' + parse.dayMinutes,
+        },
+      };
+
+    case 'period':
+      newSetting = {
+        ...newSetting,
+        schedule: {
+          type: parse.inSchedule,
+          weeks: parse.periodChecks,
+          date: parse.startDate + '~' + parse.endDate,
+          time: parse.periodTime + ':' + parse.periodMinutes,
+        },
+      };
   }
 
   if (parse.collectType === 'api') {
@@ -42,8 +73,6 @@ async function postSettingAction(parse: parseType) {
       apiExperiod: parse.apiExp,
       apiPrmt: newParams,
     };
-
-    console.error();
   }
 
   const addSettingOptions = {
