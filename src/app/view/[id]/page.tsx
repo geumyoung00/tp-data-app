@@ -5,10 +5,9 @@ export default async function LogPage({
 }: {
   params: { id: string };
 }) {
-  // console.log('id?', id);
   let nowData: dataType;
   await fetchData().then((data) => (nowData = data[parseInt(id) - 1]));
-  const { agency, collectItems, time, state, log } = nowData!;
+  const { agency, collectItem, time, state, log } = nowData!;
   const parseDate = new Date(time).toLocaleString('ko-KR', {
     year: 'numeric',
     month: 'long',
@@ -31,7 +30,7 @@ export default async function LogPage({
         </dl>
         <dl>
           <dt>수집 항목</dt>
-          <dd>{collectItems}</dd>
+          <dd>{collectItem}</dd>
         </dl>
         <dl>
           <dt>수집 시간</dt>

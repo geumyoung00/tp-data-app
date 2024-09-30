@@ -29,6 +29,11 @@
         border-radius: 2px;
         box-sizing: border-box;
         color: var.$colorBlack;
+
+        &:disabled {
+            background: var.$colorBg;
+            color: var.$colorGray2;
+        }
     }
 
     .arrow {
@@ -69,6 +74,18 @@
     &.init {
         select {
             color: var.$colorGray2;
+        }
+    }
+
+    &.read-only {
+        select {
+            pointer-events: none;
+            background: var.$colorBg;
+            color: var.$colorGray2;
+        }
+
+        .arrow {
+            z-index: 1;
         }
     }
 }

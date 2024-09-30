@@ -70,7 +70,7 @@ export default function ViewTable({ data }: { data: dataType[] }) {
             return (
               <tr key={idx}>
                 <td>{el.agency}</td>
-                <td>{el.collectItems}</td>
+                <td>{el.collectItem}</td>
                 <td>{el.type}</td>
                 <td>{el.root}</td>
                 <td>

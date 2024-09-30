@@ -1,16 +1,17 @@
 'use client';
 
-import Button from '@/src/components/button';
-import ScheduleForm from '@/src/components/form/schedule';
-import Select from '@/src/components/form/select';
-import Link from 'next/link';
 import { fetchAgencies, agencyType } from '@/src/db/agencies';
 import { collectItemsType, fetchCollectItems } from '@/src/db/collectItems';
 import { SelectChange } from '@/src/action/form/select-change';
 import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { createSetting } from '@/src/action/create-setting';
 import { scheduleType } from '@/src/db/date';
+import { useOption } from '@/src/db/settings';
+import { settingFormHandler } from '@/src/action/setting-form-action';
+import Button from '@/src/components/button';
+import ScheduleForm from '@/src/components/form/schedule';
+import Select from '@/src/components/form/select';
+import Link from 'next/link';
 import InputText from '@/src/components/form/inputText';
 import CollectTypeForm from '@/src/components/form/collectType';
 import Radio from '@/src/components/form/radio';
@@ -26,11 +27,16 @@ export default function CreateSettings() {
   const [collectItems, setCollectItems] = useState<collectItemsType[]>();
   const [selectSchedule, setSelectSchedule] = useState<string>('');
   const [selectType, setSelectType] = useState<string>('');
-  const [formState, createFormAction] = useFormState(createSetting, {
-    errors: {},
-  });
+  const [formState, createFormAction] = useFormState(
+    settingFormHandler.bind(null, { type: 'create' }),
+    {
+      errors: {},
+    }
+  );
   const errors = formState?.errors;
   let formRefs = useRef<refsInterface[]>([]);
+
+  console.log(errors);
 
   useEffect(() => {
     fetchAgencies().then((data) => setAgencies(data));
@@ -113,7 +119,7 @@ export default function CreateSettings() {
               )}
             </dd>
           </dl>
-          <dl className='form-schedule'>
+          <dl>
             <dt>수집 항목</dt>
             <dd>
               <Select init='init' hide='hide' label='collectItem'>
@@ -178,20 +184,20 @@ export default function CreateSettings() {
                   })}
                 </select>
               </Select>
-
               {selectSchedule.length > 1 ? (
                 <ScheduleForm
                   type={selectSchedule}
                   formRefHandler={formRefHandler}
-                  errors={errors}
                 />
               ) : (
                 ''
               )}
-
-              {/* vaildation scription  */}
-              {errors?.collectSchedule ? (
-                <p className='valid-script'>{errors.collectSchedule}</p>
+              {errors?.scheduleType ? (
+                <p className='valid-script'>{errors.scheduleType}</p>
+              ) : errors?.schedule && errors.schedule.length >= 3 ? (
+                <p className='valid-script'>{errors.schedule[0]}</p>
+              ) : errors?.schedule && errors.schedule.length < 3 ? (
+                <p className='valid-script'>{errors?.schedule?.join(' ')}</p>
               ) : (
                 ''
               )}
@@ -243,17 +249,7 @@ export default function CreateSettings() {
           <dl>
             <dt>사용 여부</dt>
             <dd>
-              <Radio
-                options={[
-                  {
-                    label: '사용',
-                    name: 'isUsed',
-                    value: 'use',
-                    checked: true,
-                  },
-                  { label: '미사용', name: 'isUsed', value: 'unused' },
-                ]}
-              />
+              <Radio options={useOption} />
               {errors?.isUsed ? (
                 <p className='valid-script'>{errors?.isUsed}</p>
               ) : null}

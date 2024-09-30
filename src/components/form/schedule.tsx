@@ -1,11 +1,12 @@
 'use client';
 
-import { minutes, times, weeks } from '@/src/db/date';
+import { timeArr, minuteArr, weekArr } from '@/src/db/date';
 import Select from './select';
 import Checkbox from './checkbox';
 import DatePicker from './datePicker';
-import { useContext, useState } from 'react';
-import { ErrorsType } from '@/src/action/create-setting';
+import { useEffect, useState } from 'react';
+import { ErrorsType } from '@/src/action/setting-schema';
+import { settingsType } from '@/src/db/settings';
 
 type refsType = HTMLSelectElement | HTMLInputElement | HTMLDivElement;
 
@@ -13,12 +14,26 @@ export default function ScheduleForm({
   type,
   formRefHandler,
   errors,
+  editFormData,
 }: {
   type: string;
   formRefHandler: (id: string, ref: refsType) => void;
   errors?: ErrorsType;
+  editFormData?: settingsType;
 }) {
   const [periodType, setPeriodType] = useState<string>('periodDaily');
+  const scheduleType = editFormData?.scheduleType;
+  const schedule = editFormData?.schedule;
+  const time = schedule?.time,
+    minutes = schedule?.minutes,
+    weeks = schedule?.weeks,
+    date = schedule?.date,
+    endDate = schedule?.endDate;
+
+  useEffect(() => {
+    if (scheduleType === 'period' && !weeks) setPeriodType('periodDaily');
+    else if (scheduleType === 'period' && weeks) setPeriodType('periodWeekly');
+  }, []);
 
   const periodForm = (
     <div className='inner-form'>
@@ -28,26 +43,35 @@ export default function ScheduleForm({
       </p>
       {periodType === 'periodWeekly' ? (
         <div className='checkbox-group'>
-          {weeks.map((item) => {
-            return (
-              <Checkbox
-                key={item.id}
-                showLabel
-                name='periodChecks'
-                value={item.id}
-              >
-                <span>{item.name}</span>
-              </Checkbox>
-            );
+          {weekArr!.map((item) => {
+            if (scheduleType === 'period' && weeks?.includes(item.id)) {
+              return (
+                <Checkbox
+                  key={item.id}
+                  showLabel
+                  name='weeks'
+                  value={item.id}
+                  checked
+                >
+                  <span>{item.name}</span>
+                </Checkbox>
+              );
+            } else {
+              return (
+                <Checkbox key={item.id} showLabel name='weeks' value={item.id}>
+                  <span>{item.name}</span>
+                </Checkbox>
+              );
+            }
           })}
         </div>
       ) : (
         ''
       )}
-      <Select label='periodTime' hide='hide'>
-        <select name='periodTime' id='periodTime'>
+      <Select label='time' hide='hide'>
+        <select name='time' id='time' defaultValue={time}>
           <option value='' hidden></option>
-          {times.map((num) => {
+          {timeArr.map((num) => {
             return (
               <option value={num} key={num}>
                 {num}
@@ -57,10 +81,10 @@ export default function ScheduleForm({
         </select>
       </Select>
       <p className='text'>시</p>
-      <Select label='periodMinutes' hide='hide'>
-        <select name='periodMinutes' id='periodMinutes'>
+      <Select label='minutes' hide='hide'>
+        <select name='minutes' id='minutes' defaultValue={minutes}>
           <option value='' hidden></option>
-          {minutes.map((n) => {
+          {minuteArr.map((n) => {
             return (
               <option value={n} key={n}>
                 {n}
@@ -80,16 +104,15 @@ export default function ScheduleForm({
       return (
         <>
           <div className='schedule-form'>
-            <Select label='dailyTime' hide='hide'>
+            <Select label='time' hide='hide'>
               <select
-                name='dailyTime'
-                id='dailyTime'
-                ref={(ref: HTMLSelectElement) =>
-                  formRefHandler('dailyTime', ref)
-                }
+                name='time'
+                id='time'
+                ref={(ref: HTMLSelectElement) => formRefHandler('time', ref)}
+                defaultValue={time}
               >
                 <option value='' hidden></option>
-                {times.map((num) => {
+                {timeArr.map((num) => {
                   return (
                     <option value={num} key={num}>
                       {num}
@@ -99,16 +122,15 @@ export default function ScheduleForm({
               </select>
             </Select>
             <p className='text'>시</p>
-            <Select label='dailyMinutes' hide='hide'>
+            <Select label='minutes' hide='hide'>
               <select
-                name='dailyMinutes'
-                id='dailyMinutes'
-                ref={(ref: HTMLSelectElement) =>
-                  formRefHandler('dailyMinutes', ref)
-                }
+                name='minutes'
+                id='minutes'
+                ref={(ref: HTMLSelectElement) => formRefHandler('minutes', ref)}
+                defaultValue={minutes}
               >
                 <option value='' hidden></option>
-                {minutes.map((n) => {
+                {minuteArr.map((n) => {
                   return (
                     <option value={n} key={n}>
                       {n}
@@ -119,13 +141,6 @@ export default function ScheduleForm({
             </Select>
             <p className='text'>분</p>
           </div>
-          {errors?.dailyTime || errors?.dailyMinutes ? (
-            <p className='valid-script'>
-              {errors.dailyTime || errors.dailyMinutes}
-            </p>
-          ) : (
-            ''
-          )}
         </>
       );
 
@@ -137,14 +152,15 @@ export default function ScheduleForm({
               className='checkbox-group'
               ref={(ref: HTMLDivElement) => formRefHandler('weeklyChecks', ref)}
             >
-              {weeks.map((item) => {
-                if (item.id === 'mon') {
+              {weekArr!.map((item) => {
+                if (weeks?.includes(item.id)) {
                   return (
                     <Checkbox
                       key={item.id}
                       showLabel
-                      name='weeklyChecks'
+                      name='weeks'
                       value={item.id}
+                      checked
                     >
                       <span>{item.name}</span>
                     </Checkbox>
@@ -154,7 +170,7 @@ export default function ScheduleForm({
                     <Checkbox
                       key={item.id}
                       showLabel
-                      name='weeklyChecks'
+                      name='weeks'
                       value={item.id}
                     >
                       <span>{item.name}</span>
@@ -163,16 +179,15 @@ export default function ScheduleForm({
                 }
               })}
             </div>
-            <Select label='weeklyTime' hide='hide'>
+            <Select label='time' hide='hide'>
               <select
-                name='weeklyTime'
-                id='weeklyTime'
-                ref={(ref: HTMLSelectElement) =>
-                  formRefHandler('weeklyTime', ref)
-                }
+                name='time'
+                id='time'
+                ref={(ref: HTMLSelectElement) => formRefHandler('time', ref)}
+                defaultValue={time}
               >
                 <option value='' hidden></option>
-                {times.map((num) => {
+                {timeArr.map((num) => {
                   return (
                     <option value={num} key={num}>
                       {num}
@@ -182,16 +197,15 @@ export default function ScheduleForm({
               </select>
             </Select>
             <p className='text'>시</p>
-            <Select label='weeklyMinutes' hide='hide'>
+            <Select label='minutes' hide='hide'>
               <select
-                name='weeklyMinutes'
-                id='weeklyMinutes'
-                ref={(ref: HTMLSelectElement) =>
-                  formRefHandler('weeklyMinutes', ref)
-                }
+                name='minutes'
+                id='minutes'
+                ref={(ref: HTMLSelectElement) => formRefHandler('minutes', ref)}
+                defaultValue={minutes}
               >
                 <option value='' hidden></option>
-                {minutes.map((n) => {
+                {minuteArr.map((n) => {
                   return (
                     <option value={n} key={n}>
                       {n}
@@ -202,15 +216,6 @@ export default function ScheduleForm({
             </Select>
             <p className='text'>분</p>
           </div>
-          {errors?.weeklyChecks ||
-          errors?.weeklyTime ||
-          errors?.weeklyMinutes ? (
-            <p className='valid-script'>
-              {errors.weeklyChecks || errors.weeklyTime || errors.weeklyMinutes}
-            </p>
-          ) : (
-            ''
-          )}
         </>
       );
 
@@ -218,21 +223,23 @@ export default function ScheduleForm({
       return (
         <>
           <div className='schedule-form'>
-            <DatePicker hide='hide' label='dayDate'>
+            <DatePicker hide='hide' label='date'>
               <input
                 type='date'
-                name='dayDate'
-                ref={(ref: HTMLInputElement) => formRefHandler('dayDate', ref)}
+                name='date'
+                ref={(ref: HTMLInputElement) => formRefHandler('date', ref)}
+                defaultValue={date}
               />
             </DatePicker>
-            <Select label='dayTime' hide='hide'>
+            <Select label='time' hide='hide'>
               <select
-                name='dayTime'
-                id='dayTime'
-                ref={(ref: HTMLSelectElement) => formRefHandler('dayTime', ref)}
+                name='time'
+                id='time'
+                ref={(ref: HTMLSelectElement) => formRefHandler('time', ref)}
+                defaultValue={time}
               >
                 <option value='' hidden></option>
-                {times.map((num) => {
+                {timeArr.map((num) => {
                   return (
                     <option value={num} key={num}>
                       {num}
@@ -242,16 +249,15 @@ export default function ScheduleForm({
               </select>
             </Select>
             <p className='text'>시</p>
-            <Select label='dayMinutes' hide='hide'>
+            <Select label='minutes' hide='hide'>
               <select
-                name='dayMinutes'
-                id='dayMinutes'
-                ref={(ref: HTMLSelectElement) =>
-                  formRefHandler('dayMinutes', ref)
-                }
+                name='minutes'
+                id='minutes'
+                ref={(ref: HTMLSelectElement) => formRefHandler('minutes', ref)}
+                defaultValue={minutes}
               >
                 <option value='' hidden></option>
-                {minutes.map((n) => {
+                {minuteArr.map((n) => {
                   return (
                     <option value={n} key={n}>
                       {n}
@@ -262,13 +268,6 @@ export default function ScheduleForm({
             </Select>
             <p className='text'>분</p>
           </div>
-          {errors?.dayDate || errors?.dayTime || errors?.dayMinutes ? (
-            <p className='valid-script'>
-              {errors.dayDate?.join(' ') || errors.dayTime || errors.dayMinutes}
-            </p>
-          ) : (
-            ''
-          )}
         </>
       );
 
@@ -276,13 +275,12 @@ export default function ScheduleForm({
       return (
         <>
           <div className='schedule-form'>
-            <DatePicker hide='hide' label='startDate'>
+            <DatePicker hide='hide' label='date'>
               <input
                 type='date'
-                name='startDate'
-                ref={(ref: HTMLInputElement) =>
-                  formRefHandler('startDate', ref)
-                }
+                name='date'
+                ref={(ref: HTMLInputElement) => formRefHandler('date', ref)}
+                defaultValue={date}
               />
             </DatePicker>
             <p className='text'>~</p>
@@ -291,6 +289,7 @@ export default function ScheduleForm({
                 type='date'
                 name='endDate'
                 ref={(ref: HTMLInputElement) => formRefHandler('endDate', ref)}
+                defaultValue={endDate}
               />
             </DatePicker>
             <Select label='inSchedule' hide='hide'>
@@ -303,33 +302,15 @@ export default function ScheduleForm({
                 ref={(ref: HTMLSelectElement) =>
                   formRefHandler('inSchedule', ref)
                 }
+                defaultValue={!weeks ? 'periodDaily' : 'periodWeekly'}
               >
                 <option value='periodDaily'>매일</option>
                 <option value='periodWeekly'>매주</option>
               </select>
             </Select>
           </div>
-          {errors?.startDate || errors?.endDate ? (
-            <p className='valid-script'>
-              {errors.startDate?.join(' ') || errors.endDate?.join(' ')}
-            </p>
-          ) : (
-            ''
-          )}
 
           {periodForm}
-
-          {errors?.periodChecks ||
-          errors?.periodTime ||
-          errors?.periodMinutes ? (
-            <p className='valid-script'>
-              {errors.periodChecks ||
-                errors.periodTime?.join(' ') ||
-                errors.periodMinutes?.join(' ')}
-            </p>
-          ) : (
-            ''
-          )}
         </>
       );
   }

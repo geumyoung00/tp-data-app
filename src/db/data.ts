@@ -1,7 +1,7 @@
 export type dataType = {
   id: number | string;
   agency: string;
-  collectItems: string;
+  collectItem: string;
   schedule: string;
   root: string;
   type: string;
@@ -9,7 +9,7 @@ export type dataType = {
   apiUrl: string;
   apiExperiod: string;
   apiPrmt: { id: number; key: string; value: string }[];
-  isUse: boolean;
+  isUsed: boolean;
   time: string;
   state: string;
   log: null | string;

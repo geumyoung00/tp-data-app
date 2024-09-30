@@ -6,10 +6,12 @@ import Add from '@/public/btnIcon/add.svg';
 import Link from 'next/link';
 import InputText from '@/src/components/form/inputText';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import CmsTable from '@/src/components/table/cmsTable';
 import { agencyType, fetchAgencies } from '@/src/db/agencies';
 import { fetchSettings, settingsType } from '@/src/db/settings';
+import { revalidatePath } from 'next/cache';
+import { settingRemoveHandler } from '@/src/action/setting-form-action';
 
 export default function Cms() {
   const [agencies, setAgencies] = useState<agencyType[]>([]);
@@ -33,16 +35,13 @@ export default function Cms() {
     switch (type) {
       case 'edit':
         router.push(`/cms/edit/${id}`);
-        console.log(id);
         break;
 
       case 'delete':
-        const deleteOptions = { method: 'DELETE' };
-        if (confirm(`정말 ${id} 설정을 삭제하시겠습니까?`)) {
-          fetch(`http://localhost:9999/settings/${id}`, deleteOptions).then(
-            (res) => res.json()
-          );
-        } else return;
+        if (confirm(`정말 ${id} 설정을 삭제하시겠습니까?`))
+          settingRemoveHandler(id);
+        window.location.reload();
+        break;
 
       default:
         break;

@@ -58,7 +58,7 @@ export default function View() {
         <CircleGraph />
         <CircleGraph />
       </div>
-      {/* {datas ? <ViewTable data={datas} /> : <div>데이터가 없습니다.</div>} */}
+      {datas ? <ViewTable data={datas} /> : <div>데이터가 없습니다.</div>}
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function Checkbox({
         id={value}
         disabled={disabled ? true : false}
         onChange={onChangeHandler}
-        checked={checked}
+        defaultChecked={checked}
       />
       <label className={showLabel ? '' : 'hide'} htmlFor={value}>
         {children}

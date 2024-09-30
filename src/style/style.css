@@ -318,6 +318,10 @@
   box-sizing: border-box;
   color: #2f3443;
 }
+.select select:disabled {
+  background: #F5F7FB;
+  color: #9d9dad;
+}
 .select .arrow {
   display: flex;
   justify-content: center;
@@ -350,6 +354,14 @@
 }
 .select.init select {
   color: #9d9dad;
+}
+.select.read-only select {
+  pointer-events: none;
+  background: #F5F7FB;
+  color: #9d9dad;
+}
+.select.read-only .arrow {
+  z-index: 1;
 }
 
 .date-picker {

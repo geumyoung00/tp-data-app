@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../button';
 import InputText from './inputText';
 import Select from './select';
-import { ErrorsType } from '@/src/action/create-setting';
+import { ErrorsType } from '@/src/action/setting-schema';
+import { settingsType } from '@/src/db/settings';
 
 type apiParamsType = {
-  id: number;
   key: string;
   value: string;
 };
@@ -17,9 +17,11 @@ type AddErrorType = { key: string; value: string };
 export default function CollectTypeForm({
   type,
   error,
+  editFormData,
 }: {
   type: string;
   error: ErrorsType;
+  editFormData?: settingsType;
 }) {
   switch (type) {
     case 'api':
@@ -29,6 +31,12 @@ export default function CollectTypeForm({
         value: '',
       });
       const addApiRefs = useRef<HTMLInputElement[]>([]);
+
+      useEffect(() => {
+        if (editFormData) {
+          setApiParams(editFormData.collectTypeInfo.apiPrmt);
+        }
+      }, []);
 
       const addParamsHandler = (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,13 +54,11 @@ export default function CollectTypeForm({
         }
 
         if (findSameKey) {
-          console.log(findSameKey);
           return setAddError({
             ...addError,
             key: '동일한 key를 가진 파라미터가 있습니다.',
           });
         } else if (findSameValue) {
-          console.log(findSameKey);
           return setAddError({
             key: '',
             value: '동일한 value를 가진 파라미터가 있습니다.',
@@ -60,12 +66,9 @@ export default function CollectTypeForm({
         }
 
         if (!apiParams) {
-          setApiParams([{ id: 0, key, value }]);
+          setApiParams([{ key, value }]);
         } else {
-          setApiParams([
-            ...apiParams,
-            { id: apiParams.length + 1, key, value },
-          ]);
+          setApiParams([...apiParams, { key, value }]);
         }
 
         setAddError({ key: '', value: '' });
@@ -74,9 +77,9 @@ export default function CollectTypeForm({
         error.apiParamsKey = undefined;
       };
 
-      const removeParamsHandler = (e: React.FormEvent, id: number) => {
+      const removeParamsHandler = (e: React.FormEvent, idx: number) => {
         e.preventDefault();
-        const filterIdx = apiParams?.filter((obj) => obj.id !== id);
+        const filterIdx = apiParams?.filter((obj, i) => i !== idx);
         setApiParams(filterIdx);
       };
 
@@ -87,7 +90,13 @@ export default function CollectTypeForm({
               <dt>KEY</dt>
               <dd>
                 <InputText label='apiKey' hide='hide' size='wide'>
-                  <input type='text' id='apiKey' name='apiKey' autoFocus />
+                  <input
+                    type='text'
+                    id='apiKey'
+                    name='apiKey'
+                    autoFocus={!editFormData ? true : false}
+                    defaultValue={editFormData?.collectTypeInfo.apiKey}
+                  />
                 </InputText>
                 {error?.apiKey ? (
                   <p className='valid-script'>{error.apiKey}</p>
@@ -100,7 +109,12 @@ export default function CollectTypeForm({
               <dt>URL</dt>
               <dd>
                 <InputText label='apiUrl' hide='hide' size='wide'>
-                  <input type='text' id='apiUrl' name='apiUrl' />
+                  <input
+                    type='text'
+                    id='apiUrl'
+                    name='apiUrl'
+                    defaultValue={editFormData?.collectTypeInfo.apiUrl}
+                  />
                 </InputText>
                 {error?.apiUrl ? (
                   <p className='valid-script'>{error.apiUrl}</p>
@@ -157,26 +171,30 @@ export default function CollectTypeForm({
                       onClick={(e) => addParamsHandler(e)}
                     />
                   </li>
-                  {apiParams?.map((el) => {
+                  {apiParams?.map((el, idx) => {
                     return (
-                      <li key={el.id}>
-                        <InputText label='apiParamsKey' hide='hide' size='min'>
+                      <li key={el.key}>
+                        <InputText
+                          label={idx + 'apiParamsKey'}
+                          hide='hide'
+                          size='min'
+                        >
                           <input
                             type='text'
-                            id='apiParamsKey'
+                            id={idx + 'apiParamsKey'}
                             name='apiParamsKey'
                             defaultValue={el.key}
                             readOnly
                           />
                         </InputText>
                         <InputText
-                          label='apiParamsValue'
+                          label={idx + 'apiParamsValue'}
                           hide='hide'
                           size='min'
                         >
                           <input
                             type='text'
-                            id='apiParamsValue'
+                            id={idx + 'apiParamsValue'}
                             name='apiParamsValue'
                             defaultValue={el.value}
                             readOnly
@@ -188,7 +206,7 @@ export default function CollectTypeForm({
                           icon='remove'
                           type='icon-only'
                           state='tertiary'
-                          onClick={(e) => removeParamsHandler(e, el.id)}
+                          onClick={(e) => removeParamsHandler(e, idx)}
                         />
                       </li>
                     );

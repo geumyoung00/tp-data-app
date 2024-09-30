@@ -66,693 +66,299 @@
       "id": 2,
       "agency": "국립해양조사원",
       "collectItem": "풍향/풍속",
+      "scheduleType": "weekly",
       "schedule": {
-        "type": "weekly",
-        "weeks": ["mon", "thu"],
-        "time": "02:25"
+        "weeks": [
+          "mon",
+          "thu"
+        ],
+        "time": "02",
+        "minutes": "25"
       },
       "root": "/data/khoa/wind/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
       "isUsed": true
     },
     {
       "id": 3,
       "agency": "기상청",
       "collectItem": "기압",
+      "scheduleType": "day",
       "schedule": {
-        "type": "day",
         "date": "2024-09-24",
-        "time": "02:25"
+        "time": "02",
+        "minutes": "35"
       },
       "root": "/data/kma/press/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
       "isUsed": true
     },
     {
       "id": 4,
       "agency": "국립해양위성센터",
       "collectItem": "GOCI-II L1B 위성 영상",
+      "scheduleType": "period",
       "schedule": {
-        "type": "period",
-        "startDate": "2024-04-01",
+        "date": "2024-04-01",
         "endDate": "2024-07-30",
-        "weeks": ["tue", "sat"],
-        "time": "20:30"
+        "weeks": [
+          "tue",
+          "sat"
+        ],
+        "time": "20",
+        "minutes": "05"
       },
       "root": "/data/nosc/GOCI-II",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
       "isUsed": false
     },
     {
       "id": 5,
       "agency": "기상청",
       "collectItem": "기상특보",
+      "scheduleType": "period",
       "schedule": {
-        "type": "period",
-        "startDate": "2024-04-01",
+        "date": "2024-04-01",
         "endDate": "2024-07-30",
-        "time": "02:25"
+        "time": "02",
+        "minutes": "15"
       },
       "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
       "isUsed": false
     },
     {
       "id": 6,
       "agency": "국립해양조사원",
       "collectItem": "기압",
+      "scheduleType": "daily",
       "schedule": {
-        "type": "daily",
-        "time": "20:25"
+        "time": "20",
+        "minutes": "50"
       },
       "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
       "isUsed": true
     },
     {
       "id": 7,
-      "agency": "기상청",
-      "collectItem": "풍향/풍속",
+      "agency": "국립해양조사원",
+      "collectItem": "기압",
+      "scheduleType": "daily",
       "schedule": {
-        "type": "daily",
-        "time": "02:25"
+        "time": "13",
+        "minutes": "15"
       },
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
+      "root": "/data/khoa/tide/",
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
+      "isUsed": true
+    },
+    {
+      "id": 8,
+      "agency": "국립해양조사원",
+      "collectItem": "풍향/풍속",
+      "scheduleType": "weekly",
+      "schedule": {
+        "time": "13",
+        "minutes": "15",
+        "weeks": [
+          "mon",
+          "thu"
+        ]
+      },
+      "root": "/data/khoa/wind/",
+      "collectType": "api",
+      "collectTypeInfo": {
+        "apiKey": "zxcv1234",
+        "apiUrl": "/abc/123",
+        "apiExperiod": "1year",
+        "apiPrmt": [
+          {
+            "key": "one",
+            "value": "value one"
+          },
+          {
+            "key": "two",
+            "value": "value two"
+          },
+          {
+            "key": "three",
+            "value": "value three"
+          }
+        ]
+      },
       "isUsed": false
     }
   ],
   "data": [
     {
       "id": 1,
+      "settingId": 6,
       "agency": "국립해양조사원",
       "collectItem": "실시간 조위",
-      "schedule": {
-        "type": "weekly",
-        "weeks": ["mon", "wed", "fri", "sun"],
-        "time": "12:25"
-      },
       "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
+      "collectType": "api",
       "time": "Fri May 20 2022 09:00:00",
       "state": "collecting",
       "log": null
     },
     {
       "id": 2,
+      "settingId": 4,
       "agency": "국립해양조사원",
       "collectItem": "풍향/풍속",
-      "schedule": {
-        "type": "daily",
-        "time": "16:00"
-      },
       "root": "/data/khoa/wind/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 10:00:00",
-      "state": "faild",
-      "log": "log faild context"
+      "collectType": "api",
+      "time": "Fri May 20 2022 11:45:00",
+      "state": "success",
+      "log": "success Log Data"
     },
     {
       "id": 3,
+      "settingId": 3,
       "agency": "기상청",
       "collectItem": "기압",
-      "schedule": {
-        "type": "daily",
-        "time": "02:25"
-      },
       "root": "/data/kma/press/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 11:00:00",
-      "state": "success",
-      "log": "log success context"
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "faild",
+      "log": "faild Log Data"
     },
     {
       "id": 4,
-      "agency": "국립해양위성센터",
+      "settingId": 5,
+      "agency": "국가해양위상센터",
       "collectItem": "GOCI-II L1B 위성 영상",
-      "schedule": {
-        "type": "daily",
-        "time": "02:25"
-      },
-      "root": "/data/nosc/GOCI-II",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": false,
-      "time": "Fri May 20 2022 12:00:00",
-      "state": "success",
-      "log": "log success context"
+      "root": "/data/nosc/GOCI-II/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "faild",
+      "log": "faild Log Data"
     },
     {
       "id": 5,
+      "settingId": 5,
       "agency": "기상청",
       "collectItem": "기상특보",
-      "schedule": {
-        "type": "daily",
-        "time": "02:25"
-      },
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": false,
-      "time": "Fri May 20 2022 13:00:00",
+      "root": "/data/kma/wth/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
       "state": "success",
-      "log": "log success context"
-    },
-    {
-      "id": 6,
-      "agency": "국립해양조사원",
-      "collectItem": "기압",
-      "schedule": {
-        "type": "daily",
-        "time": "02:25"
-      },
-      "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 09:00:00",
-      "state": "collecting",
-      "log": null
-    },
-    {
-      "id": 7,
-      "agency": "기상청",
-      "collectItem": "풍향/풍속",
-      "schedule": {
-        "type": "daily",
-        "time": "02:25"
-      },
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": false,
-      "time": "Fri May 20 2022 13:00:00",
-      "state": "success",
-      "log": "log success context"
-    },
-    {
-      "id": 8,
-      "agency": "국립해양조사원",
-      "collectItem": "수온",
-      "schedule": {
-        "type": "daily",
-        "time": "02:25"
-      },
-      "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 09:00:00",
-      "state": "collecting",
-      "log": null
-    },
-    {
-      "id": 9,
-      "agency": "기상청",
-      "collectItem": "풍향/풍속",
-      "schedule": {
-        "type": "daily",
-        "time": "12:25"
-      },
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": false,
-      "time": "Fri May 20 2022 13:00:00",
-      "state": "success",
-      "log": "log success context"
-    },
-    {
-      "id": 10,
-      "agency": "국립해양조사원",
-      "collectItem": "수온",
-      "schedule": {
-        "type": "daily",
-        "time": "12:25"
-      },
-      "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 09:00:00",
-      "state": "collecting",
-      "log": null
-    },
-    {
-      "id": 11,
-      "agency": "기상청",
-      "collectItem": "풍향/풍속",
-      "schedule": {
-        "type": "daily",
-        "time": "12:25"
-      },
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": false,
-      "time": "Fri May 20 2022 13:00:00",
-      "state": "success",
-      "log": "log success context"
-    },
-    {
-      "id": 12,
-      "agency": "국립해양조사원",
-      "collectItem": "수온",
-      "schedule": {
-        "type": "daily",
-        "time": "12:25"
-      },
-      "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 09:00:00",
-      "state": "collecting",
-      "log": null
-    },
-    {
-      "id": 13,
-      "agency": "기상청",
-      "collectItem": "풍향/풍속",
-      "schedule": {
-        "type": "daily",
-        "time": "12:25"
-      },
-      "root": "/data/kma/wth",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": false,
-      "time": "Fri May 20 2022 13:00:00",
-      "state": "success",
-      "log": "log success context"
-    },
-    {
-      "id": 14,
-      "agency": "국립해양조사원",
-      "collectItem": "수온",
-      "schedule": {
-        "type": "daily",
-        "time": "12:25"
-      },
-      "root": "/data/khoa/tide/",
-      "type": "api",
-      "apiKey": "zxcv1234",
-      "apiUrl": "/abc/123",
-      "apiExperiod": "1year",
-      "apiPrmt": [
-        {
-          "id": 1,
-          "key": "one",
-          "value": "value one"
-        },
-        {
-          "id": 2,
-          "key": "two",
-          "value": "value two"
-        },
-        {
-          "id": 3,
-          "key": "three",
-          "value": "value three"
-        }
-      ],
-      "isUsed": true,
-      "time": "Fri May 20 2022 09:00:00",
-      "state": "collecting",
-      "log": null
+      "log": "success Log Data"
     }
   ]
 }

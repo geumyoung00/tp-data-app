@@ -8,6 +8,7 @@ export default function Select({
   disabled,
   children,
   init,
+  readOnly,
 }: {
   label?: string;
   size?: string;
@@ -15,6 +16,7 @@ export default function Select({
   disabled?: boolean;
   children?: React.ReactNode;
   init?: string;
+  readOnly?: boolean;
 }) {
   return (
     <>
@@ -22,7 +24,9 @@ export default function Select({
         {label}
       </label>
       <div
-        className={`select${size ? ' ' + size : ''}${init ? ' ' + init : ''}`}
+        className={`select${size ? ' ' + size : ''}${init ? ' ' + init : ''}${
+          readOnly ? ' read-only' : ''
+        }`}
       >
         {children ? children : <option>내용 없음</option>}
         <i className={`arrow`}>

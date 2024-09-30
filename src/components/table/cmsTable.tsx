@@ -83,7 +83,7 @@ export default function CmsTable({
         <tbody>
           {posts.map((el, idx) => {
             const { schedule } = el;
-            const { time, date, startDate, endDate } = schedule;
+            const { time, date, endDate, minutes } = schedule;
             let weeks: string[] = [];
             schedule.weeks?.forEach((el) => {
               el === 'mon'
@@ -102,11 +102,12 @@ export default function CmsTable({
                 ? weeks.push('일')
                 : '';
             });
+
             const scheduleType =
-              schedule.type === 'daily' ||
-              (schedule.type === 'period' && !schedule.weeks)
+              el.scheduleType === 'daily' ||
+              (el.scheduleType === 'period' && !schedule.weeks)
                 ? '매일'
-                : schedule.type === 'weekly'
+                : el.scheduleType === 'weekly'
                 ? '매주'
                 : '';
 
@@ -117,9 +118,9 @@ export default function CmsTable({
                 <td>{itemIdx}</td>
                 <td>{el.agency}</td>
                 <td>{el.collectItem}</td>
-                <td>{el.type}</td>
+                <td>{el.collectType}</td>
                 <td>
-                  {date ? (
+                  {date && !endDate ? (
                     <p>
                       {new Date(date).toLocaleDateString('kr-Ko', {
                         year: 'numeric',
@@ -130,16 +131,27 @@ export default function CmsTable({
                   ) : (
                     ''
                   )}
-                  {startDate ? (
+
+                  {date && endDate ? (
                     <p>
-                      {startDate} ~ {endDate}
+                      {new Date(date).toLocaleDateString('kr-Ko', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                      ~{' '}
+                      {new Date(endDate!).toLocaleDateString('kr-Ko', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
                     </p>
                   ) : (
                     ''
                   )}
                   {`${scheduleType}
                   ${weeks ? ' ' + weeks.join(', ') : ''}
-                  ${time}`}
+                  ${time}:${minutes}`}
                 </td>
                 <td>{el.root}</td>
                 <td>
