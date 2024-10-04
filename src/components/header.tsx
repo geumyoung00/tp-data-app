@@ -28,7 +28,7 @@ export default function Header() {
             {pathname.includes('/cms') ? (
               <Link
                 className='menu-btn'
-                href={'/view'}
+                href={'/view?page=1'}
                 title='자료 수집 시스템 바로가기'
               >
                 <p className='hide'>자료 수집 시스템 바로가기</p>
@@ -39,7 +39,7 @@ export default function Header() {
             ) : (
               <Link
                 className='menu-btn'
-                href={'/cms'}
+                href={'/cms?page=1'}
                 title='자료 수집 설정 바로가기'
               >
                 <p className='hide'>자료 수집 설정 바로가기</p>

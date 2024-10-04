@@ -9,7 +9,7 @@ import {
   radioType,
   unuseOption,
 } from '@/src/db/settings';
-import { redirect, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
 import CollectTypeForm from '@/src/components/form/collectType';

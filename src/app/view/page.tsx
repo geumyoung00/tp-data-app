@@ -8,6 +8,7 @@ import ViewTable from '@/src/components/table/viewTable';
 import { dataType, fetchData } from '@/src/db/data';
 import React, { useEffect, useState } from 'react';
 import { agencyType, fetchAgencies } from '@/src/db/agencies';
+import { redirect } from 'next/navigation';
 
 export default function View() {
   const [datas, setDatas] = useState<dataType[]>();
@@ -23,7 +24,7 @@ export default function View() {
   //데이터 관리는 리덕스 써야 함 ***
   return (
     <div className='contain'>
-      <form onSubmit={(e: React.FormEvent) => e.preventDefault()}>
+      <form onSubmit={(e: React.FormEvent) => {}}>
         <ul className='filter-bar'>
           <li>
             <Select label='기관 선택'>
@@ -53,11 +54,11 @@ export default function View() {
           </li>
         </ul>
       </form>
-      <div className='board'>
+      {/* <div className='board'>
         <CircleGraph />
         <CircleGraph />
         <CircleGraph />
-      </div>
+      </div> */}
       {datas ? <ViewTable data={datas} /> : <div>데이터가 없습니다.</div>}
     </div>
   );

@@ -1,58 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagenation from './pagenation';
 import TableTop from './tableTop';
 import Link from 'next/link';
 import Button from '../button';
 import { dataType } from '@/src/db/data';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function ViewTable({ data }: { data: dataType[] }) {
-  const [postCount, setPostCount] = useState<number>(5); //보여줄 게시글 수
-  const [page, setPage] = useState<number>(1); // 선택된 페이지(현재)
-  let startIdx: number = (page - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
-  const posts = data.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
+  const [resultData, setResultData] = useState<dataType[]>([]);
+  const [postCount, setPostCount] = useState<number>(1); //보여줄 게시글 수
+  const [now, setNow] = useState<number>(1); // 선택된 페이지(현재)
+  let startIdx: number = (now - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
+  const posts = resultData.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
   const totalPages = Math.ceil(data.length / postCount);
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page') || searchParams.get('detail');
+
+  useEffect(() => setResultData(data), []);
+  useEffect(() => setNow(parseInt(page!)), [page]);
 
   const viewCountHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const changeTotalPages = Math.ceil(data.length / parseInt(e.target.value));
-    if (changeTotalPages < page) setPage(changeTotalPages);
+    if (changeTotalPages < now) setNow(changeTotalPages);
     setPostCount(parseInt(e.target.value));
   };
 
-  const viewPageHandler = ({ value }: EventTarget & HTMLButtonElement) => {
-    switch (value) {
-      case 'first':
-        setPage(1);
-        break;
-
-      case 'prev':
-        setPage(page - 1);
-        break;
-
-      case 'last':
-        setPage(totalPages);
-        break;
-
-      case 'next':
-        setPage(page + 1);
-        break;
-
-      default:
-        setPage(parseInt(value));
-        break;
-    }
-  };
-
   const searchPageHandler = (val: string) => {
-    setPage(parseInt(val));
+    setNow(parseInt(val));
   };
 
   return (
     <div className='table'>
       <TableTop
         viewCountHandler={(e) => viewCountHandler(e)}
-        pageInfo={{ page: page, totalPages: totalPages }}
+        pageInfo={{ page: now, totalPages: totalPages }}
       />
       <table>
         <thead>
@@ -61,18 +46,33 @@ export default function ViewTable({ data }: { data: dataType[] }) {
             <th>수집내용</th>
             <th>수집형태</th>
             <th>수집폴더</th>
+            <th>수집시간</th>
             <th>상태</th>
             <th>상세 로그</th>
           </tr>
         </thead>
         <tbody>
           {posts.map((el, idx) => {
+            const day = new Date(el.time).toLocaleString('kr-Ko', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            });
+            const time = new Date(el.time).toLocaleString('kr-Ko', {
+              hour: 'numeric',
+              minute: 'numeric',
+            });
             return (
               <tr key={idx}>
                 <td>{el.agency}</td>
                 <td>{el.collectItem}</td>
-                <td>{el.type}</td>
+                <td>{el.collectType}</td>
                 <td>{el.root}</td>
+                <td>
+                  {day}
+                  <br />
+                  {time}
+                </td>
                 <td>
                   <div className={`tag ${el.state}`}>
                     <span>
@@ -87,7 +87,7 @@ export default function ViewTable({ data }: { data: dataType[] }) {
                 <td>
                   {el.log ? (
                     <Link
-                      href={`/view/${idx + 1}`}
+                      href={`/view/${el.id}`}
                       className='btn min secondary'
                       scroll={false}
                     >
@@ -106,8 +106,8 @@ export default function ViewTable({ data }: { data: dataType[] }) {
         totalPost={data.length}
         totalPages={totalPages}
         postCount={postCount}
-        activePage={page}
-        viewPageHandler={(e) => viewPageHandler(e)}
+        pathname={pathname}
+        page={page!}
         searchPageHandler={(val) => searchPageHandler(val)}
       />
     </div>

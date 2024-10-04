@@ -7,34 +7,36 @@ import Next from '@/public/btnIcon/next.svg';
 import Dotted from '@/public/btnIcon/dotted.svg';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../button';
-import InputText from '../form/inputText';
+import Link from 'next/link';
+import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 
 export default function Pagenation({
   totalPost, // 총 게시글 수
   totalPages, //총 페이지 수
   postCount, // 페이지당 게시글 수
-  activePage, // 현재 페이지
-  viewPageHandler, // 페이지 이동을 위한 함수
-  searchPageHandler, // 페이지 검색을 위한 함수
+  // searchPageHandler, // 페이지 검색을 위한 함수
+  pathname,
+  page,
 }: {
   totalPost: number;
   totalPages: number;
   postCount: number;
-  activePage: number;
-  viewPageHandler: (e: EventTarget & HTMLButtonElement) => void;
-  searchPageHandler: (val: string) => void;
+  // searchPageHandler: (val: string) => void;
+  pathname: string;
+  page: string;
 }) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const searchPageRef = useRef<HTMLInputElement>(null);
+  const activePage = parseInt(page);
+  const router = useRouter();
 
-  const searchPageSubmitHandler = (e: React.FormEvent) => {
+  function searchPageAction(e: React.FormEvent) {
     e.preventDefault();
-    let { value } = searchPageRef.current!;
-    if (!value) return alert('값을 입력하세요');
-    searchPageHandler(value);
-    value = '';
-    setIsOpen(false);
-  };
+    const { value } = searchPageRef.current!;
+    router.push(`${pathname}?page=${value}`);
+    setIsOpen((prev) => !prev);
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -63,88 +65,79 @@ export default function Pagenation({
       <div className='pagenation'>
         <ul className='prev-group'>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='첫 페이지로'
-              value='first'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === 1 ? true : false}
+              href={`${pathname}?page=1`}
             >
               <span>첫 페이지로</span>
               <i>
                 <First />
               </i>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='이전 페이지로'
-              value='prev'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === 1 ? true : false}
+              href={`${pathname}?page=${parseInt(page) - 1}`}
             >
               <span>이전 페이지로</span>
               <i>
                 <Prev />
               </i>
-            </button>
+            </Link>
           </li>
         </ul>
         <ul className='number-group'>
           {pageList.map((el) => {
             return (
               <li key={el}>
-                <button
+                <Link
                   className={`min icon-only${
-                    activePage === el ? ' active' : ''
+                    parseInt(page) === el ? ' active' : ''
                   }`}
                   title={JSON.stringify(el) + '페이지로'}
-                  value={el}
-                  onClick={(e) => viewPageHandler(e.currentTarget)}
+                  href={`${pathname}?page=${el}`}
                 >
                   <span>{el}</span>
-                </button>
+                </Link>
               </li>
             );
           })}
         </ul>
         <ul className='next-group'>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='다음 페이지로'
-              value='next'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === totalPages ? true : false}
+              href={`${pathname}?page=${parseInt(page) + 1}`}
             >
               <span>다음 페이지로</span>
               <i>
                 <Next />
               </i>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='마지막 페이지로'
-              value='last'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === totalPages ? true : false}
+              href={`${pathname}?page=${totalPages}`}
             >
               <span>마지막 페이지로</span>
               <i>
                 <Last />
               </i>
-            </button>
+            </Link>
           </li>
         </ul>
       </div>
@@ -159,42 +152,38 @@ export default function Pagenation({
       <div className='pagenation'>
         <ul className='prev-group'>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='첫 페이지로'
-              value='first'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === 1 ? true : false}
+              href={`${pathname}?page=1`}
             >
               <span>첫 페이지로</span>
               <i>
                 <First />
               </i>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='이전 페이지로'
-              value='prev'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === 1 ? true : false}
+              href={`${pathname}?page=${parseInt(page) - 1}`}
             >
               <span>이전 페이지로</span>
               <i>
                 <Prev />
               </i>
-            </button>
+            </Link>
           </li>
         </ul>
 
         <ul className='number-group'>
           <li>
-            <button
+            <Link
               className={`min icon-only ${activePage === 1 ? ' active' : ''}`}
               title={
                 activePage <= 5
@@ -203,14 +192,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 5) + '페이지로'
                   : JSON.stringify(totalPages - 9) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 1
                   : activePage <= totalPages - 4
                   ? activePage - 5
                   : totalPages - 9
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -219,10 +207,10 @@ export default function Pagenation({
                   ? activePage - 5
                   : totalPages - 9}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${activePage === 2 ? ' active' : ''}`}
               title={
                 activePage <= 5
@@ -231,14 +219,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 4) + '페이지로'
                   : JSON.stringify(totalPages - 8) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 2
                   : activePage <= totalPages - 4
                   ? activePage - 4
                   : totalPages - 8
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -247,10 +234,10 @@ export default function Pagenation({
                   ? activePage - 4
                   : totalPages - 8}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${activePage === 3 ? ' active' : ''}`}
               title={
                 activePage <= 5
@@ -259,14 +246,14 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 3) + '페이지로'
                   : JSON.stringify(totalPages - 7) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 3
                   : activePage <= totalPages - 4
                   ? activePage - 3
                   : totalPages - 7
               }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              `}
             >
               <span>
                 {activePage <= 5
@@ -275,10 +262,10 @@ export default function Pagenation({
                   ? activePage - 3
                   : totalPages - 7}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${activePage === 4 ? ' active' : ''}`}
               title={
                 activePage <= 5
@@ -287,14 +274,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 2) + '페이지로'
                   : JSON.stringify(totalPages - 6) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 4
                   : activePage <= totalPages - 4
                   ? activePage - 2
                   : totalPages - 6
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -303,10 +289,10 @@ export default function Pagenation({
                   ? activePage - 2
                   : totalPages - 6}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${activePage === 5 ? ' active' : ''}`}
               title={
                 activePage <= 5
@@ -315,14 +301,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 1) + '페이지로'
                   : JSON.stringify(totalPages - 5) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 5
                   : activePage <= totalPages - 4
                   ? activePage - 1
                   : totalPages - 5
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -331,10 +316,10 @@ export default function Pagenation({
                   ? activePage - 1
                   : totalPages - 5}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${
                 activePage > 5 && activePage < totalPages - 3 ? ' active' : ''
               }`}
@@ -345,14 +330,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage) + '페이지로'
                   : JSON.stringify(totalPages - 4) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 6
                   : activePage <= totalPages - 4
                   ? activePage
                   : totalPages - 4
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -361,10 +345,10 @@ export default function Pagenation({
                   ? activePage
                   : totalPages - 4}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${
                 activePage === totalPages - 3 ? ' active' : ''
               }`}
@@ -375,14 +359,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 1) + '페이지로'
                   : JSON.stringify(totalPages - 3) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 7
                   : activePage <= totalPages - 4
                   ? activePage + 1
                   : totalPages - 3
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -391,10 +374,10 @@ export default function Pagenation({
                   ? activePage + 1
                   : totalPages - 3}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${
                 activePage === totalPages - 2 ? ' active' : ''
               }`}
@@ -405,14 +388,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 2) + '페이지로'
                   : JSON.stringify(totalPages - 2) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 8
                   : activePage <= totalPages - 4
                   ? activePage + 2
                   : totalPages - 2
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -421,20 +403,13 @@ export default function Pagenation({
                   ? activePage + 2
                   : totalPages - 2}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${
                 activePage === totalPages - 1 ? ' active' : ''
               }`}
-              value={
-                activePage <= 5
-                  ? 9
-                  : activePage <= totalPages - 4
-                  ? activePage + 3
-                  : totalPages - 1
-              }
               title={
                 activePage <= 5
                   ? JSON.stringify(9) + '페이지로'
@@ -442,7 +417,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 3) + '페이지로'
                   : JSON.stringify(totalPages - 1) + '페이지로'
               }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              href={`${pathname}?page=${
+                activePage <= 5
+                  ? 9
+                  : activePage <= totalPages - 4
+                  ? activePage + 3
+                  : totalPages - 1
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -451,10 +432,10 @@ export default function Pagenation({
                   ? activePage + 3
                   : totalPages - 1}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`min icon-only ${
                 activePage === totalPages ? ' active' : ''
               }`}
@@ -465,14 +446,13 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 4) + '페이지로'
                   : JSON.stringify(totalPages) + '페이지로'
               }
-              value={
+              href={`${pathname}?page=${
                 activePage <= 5
                   ? 10
                   : activePage <= totalPages - 4
                   ? activePage + 4
                   : totalPages
-              }
-              onClick={(e) => viewPageHandler(e.currentTarget)}
+              }`}
             >
               <span>
                 {activePage <= 5
@@ -481,11 +461,11 @@ export default function Pagenation({
                   ? activePage + 4
                   : totalPages}
               </span>
-            </button>
+            </Link>
           </li>
           <li>
             <button
-              className={`min icon-only`}
+              className={`search-page min icon-only `}
               onClick={(e) => {
                 searchPageRef.current!.focus();
                 e.preventDefault();
@@ -498,12 +478,13 @@ export default function Pagenation({
               </i>
             </button>
             <div className={`search-modal${isOpen ? ' open' : ''}`}>
-              <form onSubmit={(e) => searchPageSubmitHandler(e)}>
+              <form onSubmit={(e) => searchPageAction(e)}>
                 <input
                   type='number'
                   min='1'
                   max={totalPages}
                   ref={searchPageRef}
+                  defaultValue={activePage}
                 />
                 / {totalPages}
                 <Button label='이동' size='min' />
@@ -514,36 +495,32 @@ export default function Pagenation({
 
         <ul className='next-group'>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='다음 페이지로'
-              value='next'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === totalPages ? true : false}
+              href={`${pathname}?page=${parseInt(page) + 1}`}
             >
               <span>다음 페이지로</span>
               <i>
                 <Next />
               </i>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
+            <Link
               className={`btn min icon-only${
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='마지막 페이지로'
-              value='last'
-              onClick={(e) => viewPageHandler(e.currentTarget)}
-              disabled={activePage === totalPages ? true : false}
+              href={`${pathname}?page=${totalPages}`}
             >
               <span>마지막 페이지로</span>
               <i>
                 <Last />
               </i>
-            </button>
+            </Link>
           </li>
         </ul>
       </div>

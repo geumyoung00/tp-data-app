@@ -68,10 +68,7 @@
       "collectItem": "풍향/풍속",
       "scheduleType": "weekly",
       "schedule": {
-        "weeks": [
-          "mon",
-          "thu"
-        ],
+        "weeks": ["mon", "thu"],
         "time": "02",
         "minutes": "25"
       },
@@ -139,10 +136,7 @@
       "schedule": {
         "date": "2024-04-01",
         "endDate": "2024-07-30",
-        "weeks": [
-          "tue",
-          "sat"
-        ],
+        "weeks": ["tue", "sat"],
         "time": "20",
         "minutes": "05"
       },
@@ -275,10 +269,7 @@
       "schedule": {
         "time": "13",
         "minutes": "15",
-        "weeks": [
-          "mon",
-          "thu"
-        ]
+        "weeks": ["mon", "thu"]
       },
       "root": "/data/khoa/wind/",
       "collectType": "api",
@@ -359,6 +350,94 @@
       "time": "Fri May 20 2022 17:30:00",
       "state": "success",
       "log": "success Log Data"
+    },
+    {
+      "id": 6,
+      "settingId": 6,
+      "agency": "국립해양조사원",
+      "collectItem": "실시간 조위",
+      "root": "/data/khoa/tide/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 09:00:00",
+      "state": "collecting",
+      "log": null
+    },
+    {
+      "id": 7,
+      "settingId": 4,
+      "agency": "국립해양조사원",
+      "collectItem": "풍향/풍속",
+      "root": "/data/khoa/wind/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 11:45:00",
+      "state": "success",
+      "log": "success Log Data"
+    },
+    {
+      "id": 8,
+      "settingId": 3,
+      "agency": "기상청",
+      "collectItem": "기압",
+      "root": "/data/kma/press/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "faild",
+      "log": "faild Log Data"
+    },
+    {
+      "id": 9,
+      "settingId": 5,
+      "agency": "국가해양위상센터",
+      "collectItem": "GOCI-II L1B 위성 영상",
+      "root": "/data/nosc/GOCI-II/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "faild",
+      "log": "faild Log Data"
+    },
+    {
+      "id": 10,
+      "settingId": 5,
+      "agency": "기상청",
+      "collectItem": "기상특보",
+      "root": "/data/kma/wth/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "success",
+      "log": "success Log Data"
+    },
+    {
+      "id": 11,
+      "settingId": 5,
+      "agency": "국가해양위상센터",
+      "collectItem": "GOCI-II L1B 위성 영상",
+      "root": "/data/nosc/GOCI-II/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "faild",
+      "log": "faild Log Data"
+    },
+    {
+      "id": 12,
+      "settingId": 5,
+      "agency": "기상청",
+      "collectItem": "기상특보",
+      "root": "/data/kma/wth/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 17:30:00",
+      "state": "success",
+      "log": "success Log Data"
+    },
+    {
+      "id": 13,
+      "settingId": 6,
+      "agency": "국립해양조사원",
+      "collectItem": "실시간 조위",
+      "root": "/data/khoa/tide/",
+      "collectType": "api",
+      "time": "Fri May 20 2022 09:00:00",
+      "state": "collecting",
+      "log": null
     }
   ]
 }

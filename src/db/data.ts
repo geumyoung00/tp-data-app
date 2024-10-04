@@ -4,7 +4,7 @@ export type dataType = {
   collectItem: string;
   schedule: string;
   root: string;
-  type: string;
+  collectType: string;
   apiKey: string;
   apiUrl: string;
   apiExperiod: string;

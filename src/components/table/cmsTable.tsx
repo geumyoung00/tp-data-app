@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagenation from './pagenation';
 import TableTop from './tableTop';
 import Button from '../button';
 import { settingsType } from '@/src/db/settings';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function CmsTable({
   data,
@@ -16,44 +17,28 @@ export default function CmsTable({
     id: string
   ) => void;
 }) {
-  const [postCount, setPostCount] = useState<number>(5); //보여줄 게시글 수
-  const [page, setPage] = useState<number>(1); // 선택된 페이지(현재)
-  let startIdx: number = (page - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
+  const [postCount, setPostCount] = useState<number>(1); //보여줄 게시글 수
+  const [now, setNow] = useState<number>(1); // 선택된 페이지(현재)
+  let startIdx: number = (now - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
   const posts = data.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
   const totalPages = Math.ceil(data.length / postCount);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const page = searchParams.get('page');
+  const router = useRouter();
+
+  useEffect(() => {});
 
   const viewCountHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const changeTotalPages = Math.ceil(data.length / parseInt(e.target.value));
-    if (changeTotalPages < page) setPage(changeTotalPages);
+    if (changeTotalPages < now) setNow(changeTotalPages);
     setPostCount(parseInt(e.target.value));
   };
 
-  const viewPageHandler = ({ value }: EventTarget & HTMLButtonElement) => {
-    switch (value) {
-      case 'first':
-        setPage(1);
-        break;
-
-      case 'prev':
-        setPage(page - 1);
-        break;
-
-      case 'last':
-        setPage(totalPages);
-        break;
-
-      case 'next':
-        setPage(page + 1);
-        break;
-
-      default:
-        setPage(parseInt(value));
-        break;
-    }
-  };
-
   const searchPageHandler = (val: string) => {
-    setPage(parseInt(val));
+    // router.push(`${pathname}?page=${val}`);
+    // setNow(parseInt(val));
+    // console.log(val);
   };
 
   let itemIdx = startIdx;
@@ -62,7 +47,7 @@ export default function CmsTable({
     <div className='table'>
       <TableTop
         viewCountHandler={(e) => viewCountHandler(e)}
-        pageInfo={{ page: page, totalPages: totalPages }}
+        pageInfo={{ page: now, totalPages: totalPages }}
       />
       <table>
         <colgroup>
@@ -190,9 +175,9 @@ export default function CmsTable({
         totalPost={data.length}
         totalPages={totalPages}
         postCount={postCount}
-        activePage={page}
-        viewPageHandler={(e) => viewPageHandler(e)}
-        searchPageHandler={(val) => searchPageHandler(val)}
+        // searchPageHandler={(val) => searchPageHandler(val)}
+        pathname={pathname}
+        page={page!}
       />
     </div>
   );
