@@ -1,14 +1,8 @@
 'use client';
 
 import { settingFormHandler } from '@/src/action/setting-form-action';
-import { scheduleType } from '@/src/db/date';
-import {
-  fetchSettings,
-  settingsType,
-  useOption,
-  radioType,
-  unuseOption,
-} from '@/src/db/settings';
+import { scheduleType, unuseOption, useOption } from '@/src/db/date';
+import { fetchSettings, settingType, radioType } from '@/src/db/settings';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
@@ -28,7 +22,7 @@ interface refsInterface {
 }
 
 export default function EditPage() {
-  const [nowSetting, setNowSetting] = useState<settingsType>();
+  const [nowSetting, setNowSetting] = useState<settingType>();
   const [selectSchedule, setSelectSchedule] = useState<string>('');
   const [selectType, setSelectType] = useState<string>('');
   const [isUsed, setIsUsed] = useState<radioType[]>();
@@ -48,7 +42,7 @@ export default function EditPage() {
   useEffect(() => {
     fetchSettings().then((res) => {
       const filterItem = res.filter(
-        (item: settingsType) => JSON.stringify(item.id) === id
+        (item: settingType) => JSON.stringify(item.id) === id
       );
 
       const option = filterItem[0].isUsed ? useOption : unuseOption;
@@ -88,8 +82,6 @@ export default function EditPage() {
     router.push('/cms');
   }
 
-  console.log(errors);
-
   return (
     <div className='contain'>
       <h2 className='sub-title'>수집 설정 수정</h2>
@@ -98,7 +90,7 @@ export default function EditPage() {
           <dl>
             <dt>기관</dt>
             <dd>
-              <Select hide='hide' label='agency' readOnly>
+              <Select label='agency' forLabel='agency' hide='hide' readOnly>
                 <select id={'agency'} name={'agency'}>
                   <option value={nowSetting?.agency}>
                     {nowSetting?.agency}
@@ -117,7 +109,12 @@ export default function EditPage() {
           <dl>
             <dt>수집 항목</dt>
             <dd>
-              <Select hide='hide' label='collectItem' readOnly>
+              <Select
+                label='collectItem'
+                forLabel='collectItem'
+                hide='hide'
+                readOnly
+              >
                 <select name='collectItem' id='collectItem'>
                   <option value={nowSetting?.collectItem}>
                     {nowSetting?.collectItem}
@@ -136,7 +133,11 @@ export default function EditPage() {
           <dl>
             <dt>수집 스케줄</dt>
             <dd>
-              <Select label='collectSchedule' hide='hide'>
+              <Select
+                label='collectSchedule'
+                forLabel='collectSchedule'
+                hide='hide'
+              >
                 <select
                   name='collectSchedule'
                   id='collectSchedule'
@@ -189,7 +190,7 @@ export default function EditPage() {
           <dl>
             <dt>수집 형태</dt>
             <dd>
-              <Select label='collectType' hide='hide'>
+              <Select label='collectType' forLabel='collectType' hide='hide'>
                 <select
                   name='collectType'
                   id='collectType'

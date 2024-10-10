@@ -15,7 +15,7 @@ import {
 import { Errors } from './setting-schema';
 import { z } from 'zod';
 
-async function settingRemoveHandler(id: string) {
+async function settingRemoveAction(id: string) {
   const deleteOptions = { method: 'DELETE' };
   await fetch(`http://localhost:9999/settings/${id}`, deleteOptions).then(
     (res) => res.json()
@@ -134,8 +134,6 @@ async function settingFormHandler(
         },
         collectTypeInfo: { ...typeParse },
       };
-
-      console.log(newSetting);
 
       result = z
         .intersection(z.object({ ...periodDaily }), z.object({ ...apiSchema }))
@@ -257,8 +255,6 @@ async function settingFormHandler(
     }
 
     if (type === 'edit') {
-      console.log(newSetting);
-
       const editSettingOptions = {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -282,4 +278,4 @@ async function settingFormHandler(
   redirect('/cms');
 }
 
-export { settingFormHandler, settingRemoveHandler };
+export { settingFormHandler, settingRemoveAction };

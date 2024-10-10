@@ -25,4 +25,34 @@ const weekArr = [
   { id: 'sun', name: '일' },
 ];
 
-export { scheduleType, timeArr, minuteArr, weekArr };
+const useOption = [
+  {
+    label: '사용',
+    name: 'isUsed',
+    value: 'use',
+    checked: true,
+  },
+  {
+    label: '미사용',
+    name: 'isUsed',
+    value: 'unused',
+    checked: false,
+  },
+];
+
+const unuseOption = [
+  {
+    label: '사용',
+    name: 'isUsed',
+    value: 'use',
+    checked: false,
+  },
+  {
+    label: '미사용',
+    name: 'isUsed',
+    value: 'unused',
+    checked: true,
+  },
+];
+
+export { scheduleType, timeArr, minuteArr, weekArr, useOption, unuseOption };

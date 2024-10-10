@@ -5,58 +5,63 @@ import Button from '@/src/components/button';
 import Add from '@/public/btnIcon/add.svg';
 import Link from 'next/link';
 import InputText from '@/src/components/form/inputText';
-import { useEffect, useState } from 'react';
-import { redirect, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import CmsTable from '@/src/components/table/cmsTable';
 import { agencyType, fetchAgencies } from '@/src/db/agencies';
-import { fetchSettings, settingsType } from '@/src/db/settings';
-import { revalidatePath } from 'next/cache';
-import { settingRemoveHandler } from '@/src/action/setting-form-action';
+import { useFormState } from 'react-dom';
+import {
+  fetchSearchSettings,
+  fetchSettings,
+  settingType,
+} from '@/src/db/settings';
+import { useRouter } from 'next/navigation';
 
 export default function Cms() {
+  const [settings, setSettings] = useState<settingType[]>([]);
   const [agencies, setAgencies] = useState<agencyType[]>([]);
-  const [settings, setSettings] = useState<settingsType[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  const [formState, settingFormHandler] = useFormState(fetchSearchSettings, {
+    errors: {},
+  });
   const router = useRouter();
+  const agency = selectRef.current?.value;
+  const keyword = inputRef.current?.value;
 
   useEffect(() => {
     fetchAgencies().then((data) =>
       setAgencies([{ id: 'all', name: '전체' }, ...data])
     );
-    fetchSettings().then((data) => setSettings(data));
   }, []);
 
-  const settingHandler = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-    id: string
-  ) => {
-    const target = e.target as HTMLElement;
-    const type = target.innerText === '수정' ? 'edit' : 'delete';
+  useEffect(() => {
+    if (formState.errors?._form) alert(formState.errors._form);
+    if (!formState.filterd) fetchSettings().then((data) => setSettings(data));
 
-    switch (type) {
-      case 'edit':
-        router.push(`/cms/edit/${id}`);
-        break;
-
-      case 'delete':
-        if (confirm(`정말 ${id} 설정을 삭제하시겠습니까?`))
-          settingRemoveHandler(id);
-        window.location.reload();
-        break;
-
-      default:
-        break;
+    if (!formState.filterd && inputRef.current && inputRef.current.value) {
+      inputRef.current.value = '';
+      inputRef.current.focus();
     }
-  };
+
+    if (formState.filterd) {
+      router.push(`/cms?agency=${agency}&keyword=${keyword}`);
+      setSettings(formState.filterd);
+    }
+  }, [formState]);
 
   return (
     <div className='contain'>
-      <form>
+      <form action={settingFormHandler}>
         <ul className='filter-bar'>
           <li>
-            <Select label='기관 선택'>
-              <select name='searchAgency' id='searchAgency'>
+            <Select label='기관 선택' forLabel='searchAgency'>
+              <select name='searchAgency' id='searchAgency' ref={selectRef}>
                 {agencies.map((item) => {
-                  return <option key={item.id}>{item.name}</option>;
+                  return (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  );
                 })}
               </select>
             </Select>
@@ -67,6 +72,7 @@ export default function Cms() {
                 type='text'
                 name='searchKeyword'
                 placeholder='검색어를 입력하세요.'
+                ref={inputRef}
               />
             </InputText>
           </li>
@@ -83,10 +89,7 @@ export default function Cms() {
           </li>
         </ul>
       </form>
-      <CmsTable
-        data={settings}
-        settingHandler={(e, id) => settingHandler(e, id)}
-      />
+      <CmsTable settings={settings} />
     </div>
   );
 }

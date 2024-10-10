@@ -5,8 +5,8 @@ export default function Home() {
     <>
       <div className='contain login'>
         <h3>로그인페이지</h3>
-        <Link href='/view?page=1'>자료수집현황</Link>
-        <Link href='/cms?page=1'>자료수집시스템</Link>
+        <Link href='/view'>자료수집현황</Link>
+        <Link href='/cms'>자료수집시스템</Link>
       </div>
     </>
   );

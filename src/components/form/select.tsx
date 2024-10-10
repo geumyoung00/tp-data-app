@@ -3,24 +3,24 @@ import Arrow from '@/public/arrow.svg';
 
 export default function Select({
   label,
+  forLabel,
   size,
   hide,
-  disabled,
   children,
   init,
   readOnly,
 }: {
-  label?: string;
+  label: string;
+  forLabel: string;
   size?: string;
   hide?: string;
-  disabled?: boolean;
   children?: React.ReactNode;
   init?: string;
   readOnly?: boolean;
 }) {
   return (
     <>
-      <label htmlFor={label} className={hide ? ' ' + 'hide' : ''}>
+      <label htmlFor={forLabel} className={hide ? ' ' + 'hide' : ''}>
         {label}
       </label>
       <div

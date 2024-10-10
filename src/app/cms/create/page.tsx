@@ -5,8 +5,7 @@ import { collectItemsType, fetchCollectItems } from '@/src/db/collectItems';
 import { SelectChange } from '@/src/action/form/select-change';
 import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { scheduleType } from '@/src/db/date';
-import { useOption } from '@/src/db/settings';
+import { scheduleType, useOption } from '@/src/db/date';
 import { settingFormHandler } from '@/src/action/setting-form-action';
 import Button from '@/src/components/button';
 import ScheduleForm from '@/src/components/form/schedule';
@@ -35,8 +34,6 @@ export default function CreateSettings() {
   );
   const errors = formState?.errors;
   let formRefs = useRef<refsInterface[]>([]);
-
-  console.log(errors);
 
   useEffect(() => {
     fetchAgencies().then((data) => setAgencies(data));
@@ -84,7 +81,7 @@ export default function CreateSettings() {
           <dl>
             <dt>기관</dt>
             <dd>
-              <Select hide='hide' label='agency' init='init'>
+              <Select label='agency' forLabel='agency' hide='hide' init='init'>
                 <select
                   id={'agency'}
                   name={'agency'}
@@ -98,7 +95,7 @@ export default function CreateSettings() {
                   </option>
                   {agencies?.map((item) => {
                     return (
-                      <option key={item.id} value={item.name}>
+                      <option key={item.id} value={item.id}>
                         {item.name}
                       </option>
                     );
@@ -122,7 +119,12 @@ export default function CreateSettings() {
           <dl>
             <dt>수집 항목</dt>
             <dd>
-              <Select init='init' hide='hide' label='collectItem'>
+              <Select
+                label='collectItem'
+                forLabel='collectItem'
+                init='init'
+                hide='hide'
+              >
                 <select
                   name='collectItem'
                   id='collectItem'
@@ -160,7 +162,12 @@ export default function CreateSettings() {
           <dl>
             <dt>수집 스케줄</dt>
             <dd>
-              <Select label='collectSchedule' hide='hide' init='init'>
+              <Select
+                label='collectSchedule'
+                forLabel='collectSchedule'
+                hide='hide'
+                init='init'
+              >
                 <select
                   name='collectSchedule'
                   id='collectSchedule'
@@ -219,7 +226,12 @@ export default function CreateSettings() {
           <dl>
             <dt>수집 형태</dt>
             <dd>
-              <Select label='collectType' hide='hide' init='init'>
+              <Select
+                label='collectType'
+                forLabel='collectType'
+                hide='hide'
+                init='init'
+              >
                 <select
                   name='collectType'
                   id='collectType'

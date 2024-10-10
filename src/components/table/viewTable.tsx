@@ -5,32 +5,36 @@ import Pagenation from './pagenation';
 import TableTop from './tableTop';
 import Link from 'next/link';
 import Button from '../button';
-import { dataType } from '@/src/db/data';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { dataType, fetchData } from '@/src/db/data';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { agencyType, fetchAgencies } from '@/src/db/agencies';
 
-export default function ViewTable({ data }: { data: dataType[] }) {
-  const [resultData, setResultData] = useState<dataType[]>([]);
-  const [postCount, setPostCount] = useState<number>(1); //보여줄 게시글 수
+export default function ViewTable({ datas }: { datas: dataType[] }) {
+  const [agencies, setAgencies] = useState<agencyType[]>();
+  const [postCount, setPostCount] = useState<number>(5); //보여줄 게시글 수
   const [now, setNow] = useState<number>(1); // 선택된 페이지(현재)
-  let startIdx: number = (now - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
-  const posts = resultData.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
-  const totalPages = Math.ceil(data.length / postCount);
-
+  const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const page = searchParams.get('page') || searchParams.get('detail');
+  const page = useSearchParams().get('page');
+  let startIdx: number = (now - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
+  const posts = datas.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
+  const totalPages = Math.ceil(datas.length / postCount);
 
-  useEffect(() => setResultData(data), []);
-  useEffect(() => setNow(parseInt(page!)), [page]);
+  useEffect(() => {
+    if (!page) setNow(1);
+    else if (parseInt(page) > totalPages) {
+      router.push(`/view`);
+    } else setNow(parseInt(page));
+  }, [page]);
+
+  useEffect(() => {
+    fetchAgencies().then((res) => setAgencies(res));
+  }, []);
 
   const viewCountHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const changeTotalPages = Math.ceil(data.length / parseInt(e.target.value));
+    const changeTotalPages = Math.ceil(datas.length / parseInt(e.target.value));
     if (changeTotalPages < now) setNow(changeTotalPages);
     setPostCount(parseInt(e.target.value));
-  };
-
-  const searchPageHandler = (val: string) => {
-    setNow(parseInt(val));
   };
 
   return (
@@ -53,18 +57,24 @@ export default function ViewTable({ data }: { data: dataType[] }) {
         </thead>
         <tbody>
           {posts.map((el, idx) => {
-            const day = new Date(el.time).toLocaleString('kr-Ko', {
+            const day = new Date(el.date).toLocaleString('kr-Ko', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
             });
-            const time = new Date(el.time).toLocaleString('kr-Ko', {
-              hour: 'numeric',
-              minute: 'numeric',
-            });
+
+            const time = new Date(el.date + ' ' + el.time).toLocaleTimeString(
+              'kr-Ko',
+              {
+                hour: 'numeric',
+                minute: 'numeric',
+              }
+            );
             return (
               <tr key={idx}>
-                <td>{el.agency}</td>
+                <td>
+                  {agencies?.find((agency) => agency.id === el.agency)?.name}
+                </td>
                 <td>{el.collectItem}</td>
                 <td>{el.collectType}</td>
                 <td>{el.root}</td>
@@ -103,12 +113,11 @@ export default function ViewTable({ data }: { data: dataType[] }) {
         </tbody>
       </table>
       <Pagenation
-        totalPost={data.length}
+        totalPost={datas.length}
         totalPages={totalPages}
         postCount={postCount}
         pathname={pathname}
-        page={page!}
-        searchPageHandler={(val) => searchPageHandler(val)}
+        page={!page ? '1' : page}
       />
     </div>
   );
