@@ -6,7 +6,7 @@ import Checkbox from './checkbox';
 import DatePicker from './datePicker';
 import { useEffect, useState } from 'react';
 import { ErrorsType } from '@/src/action/setting-schema';
-import { settingsType } from '@/src/db/settings';
+import { settingType } from '@/src/db/settings';
 
 type refsType = HTMLSelectElement | HTMLInputElement | HTMLDivElement;
 
@@ -19,12 +19,12 @@ export default function ScheduleForm({
   type: string;
   formRefHandler: (id: string, ref: refsType) => void;
   errors?: ErrorsType;
-  editFormData?: settingsType;
+  editFormData?: settingType;
 }) {
   const [periodType, setPeriodType] = useState<string>('periodDaily');
   const scheduleType = editFormData?.scheduleType;
   const schedule = editFormData?.schedule;
-  const time = schedule?.time,
+  const time = schedule?.hour,
     minutes = schedule?.minutes,
     weeks = schedule?.weeks,
     date = schedule?.date,
@@ -68,7 +68,7 @@ export default function ScheduleForm({
       ) : (
         ''
       )}
-      <Select label='time' hide='hide'>
+      <Select label='time' forLabel='time' hide='hide'>
         <select name='time' id='time' defaultValue={time}>
           <option value='' hidden></option>
           {timeArr.map((num) => {
@@ -81,7 +81,7 @@ export default function ScheduleForm({
         </select>
       </Select>
       <p className='text'>시</p>
-      <Select label='minutes' hide='hide'>
+      <Select label='minutes' forLabel='minutes' hide='hide'>
         <select name='minutes' id='minutes' defaultValue={minutes}>
           <option value='' hidden></option>
           {minuteArr.map((n) => {
@@ -104,7 +104,7 @@ export default function ScheduleForm({
       return (
         <>
           <div className='schedule-form'>
-            <Select label='time' hide='hide'>
+            <Select label='time' forLabel='time' hide='hide'>
               <select
                 name='time'
                 id='time'
@@ -122,7 +122,7 @@ export default function ScheduleForm({
               </select>
             </Select>
             <p className='text'>시</p>
-            <Select label='minutes' hide='hide'>
+            <Select label='minutes' forLabel='minutes' hide='hide'>
               <select
                 name='minutes'
                 id='minutes'
@@ -179,7 +179,7 @@ export default function ScheduleForm({
                 }
               })}
             </div>
-            <Select label='time' hide='hide'>
+            <Select label='time' forLabel='time' hide='hide'>
               <select
                 name='time'
                 id='time'
@@ -197,7 +197,7 @@ export default function ScheduleForm({
               </select>
             </Select>
             <p className='text'>시</p>
-            <Select label='minutes' hide='hide'>
+            <Select label='minutes' forLabel='minutes' hide='hide'>
               <select
                 name='minutes'
                 id='minutes'
@@ -231,7 +231,7 @@ export default function ScheduleForm({
                 defaultValue={date}
               />
             </DatePicker>
-            <Select label='time' hide='hide'>
+            <Select label='time' forLabel='time' hide='hide'>
               <select
                 name='time'
                 id='time'
@@ -249,7 +249,7 @@ export default function ScheduleForm({
               </select>
             </Select>
             <p className='text'>시</p>
-            <Select label='minutes' hide='hide'>
+            <Select label='minutes' forLabel='minutes' hide='hide'>
               <select
                 name='minutes'
                 id='minutes'
@@ -292,7 +292,7 @@ export default function ScheduleForm({
                 defaultValue={endDate}
               />
             </DatePicker>
-            <Select label='inSchedule' hide='hide'>
+            <Select label='inSchedule' forLabel='inSchedule' hide='hide'>
               <select
                 name='inSchedule'
                 id='inSchedule'

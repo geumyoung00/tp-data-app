@@ -4,41 +4,47 @@ import React, { useEffect, useState } from 'react';
 import Pagenation from './pagenation';
 import TableTop from './tableTop';
 import Button from '../button';
-import { settingsType } from '@/src/db/settings';
+import { settingType } from '@/src/db/settings';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { settingRemoveAction } from '@/src/action/setting-form-action';
+import Link from 'next/link';
+import { agencyType, fetchAgencies } from '@/src/db/agencies';
 
-export default function CmsTable({
-  data,
-  settingHandler,
-}: {
-  data: settingsType[];
-  settingHandler?: (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-    id: string
-  ) => void;
-}) {
-  const [postCount, setPostCount] = useState<number>(1); //보여줄 게시글 수
+export default function CmsTable({ settings }: { settings: settingType[] }) {
+  const [agencies, setAgencies] = useState<agencyType[]>();
+  const [postCount, setPostCount] = useState<number>(5); //보여줄 게시글 수
   const [now, setNow] = useState<number>(1); // 선택된 페이지(현재)
-  let startIdx: number = (now - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
-  const posts = data.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
-  const totalPages = Math.ceil(data.length / postCount);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const page = searchParams.get('page');
   const router = useRouter();
+  const pathname = usePathname();
+  const page = useSearchParams().get('page');
+  let startIdx: number = (now - 1) * postCount; //선택 페이지의 시작 게시글의 인덱스
+  const posts = settings.slice(startIdx, startIdx + postCount); // 선택된 갯수만큼 보여질 게시글 목록
+  const totalPages = Math.ceil(settings.length / postCount);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (!page) setNow(1);
+    else if (parseInt(page) > totalPages) {
+      router.push(`/cms`);
+    } else setNow(parseInt(page));
+  }, [page]);
+
+  useEffect(() => {
+    fetchAgencies().then((res) => setAgencies(res));
+  }, []);
 
   const viewCountHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const changeTotalPages = Math.ceil(data.length / parseInt(e.target.value));
+    const changeTotalPages = Math.ceil(
+      settings.length / parseInt(e.target.value)
+    );
     if (changeTotalPages < now) setNow(changeTotalPages);
     setPostCount(parseInt(e.target.value));
   };
 
-  const searchPageHandler = (val: string) => {
-    // router.push(`${pathname}?page=${val}`);
-    // setNow(parseInt(val));
-    // console.log(val);
+  const removeSettingHandler = (id: string) => {
+    if (confirm(`정말 ${id} 설정을 삭제하시겠습니까?`)) settingRemoveAction(id);
+    window.location.reload();
+    router.push(`/cms?page=${id}`);
+    return;
   };
 
   let itemIdx = startIdx;
@@ -68,7 +74,7 @@ export default function CmsTable({
         <tbody>
           {posts.map((el, idx) => {
             const { schedule } = el;
-            const { time, date, endDate, minutes } = schedule;
+            const { hour, date, endDate, minutes } = schedule;
             let weeks: string[] = [];
             schedule.weeks?.forEach((el) => {
               el === 'mon'
@@ -101,7 +107,9 @@ export default function CmsTable({
             return (
               <tr key={idx}>
                 <td>{itemIdx}</td>
-                <td>{el.agency}</td>
+                <td>
+                  {agencies?.find((agency) => agency.id === el.agency)?.name}
+                </td>
                 <td>{el.collectItem}</td>
                 <td>{el.collectType}</td>
                 <td>
@@ -136,7 +144,7 @@ export default function CmsTable({
                   )}
                   {`${scheduleType}
                   ${weeks ? ' ' + weeks.join(', ') : ''}
-                  ${time}:${minutes}`}
+                  ${hour}:${minutes}`}
                 </td>
                 <td>{el.root}</td>
                 <td>
@@ -152,17 +160,17 @@ export default function CmsTable({
                 </td>
                 <td>
                   <div className='btn-group'>
-                    <Button
-                      label='수정'
-                      state='secondary'
-                      size='min'
-                      onClick={(e) => settingHandler!(e, el.id)}
-                    />
+                    <Link
+                      href={`/cms/edit/${el.id}`}
+                      className='btn min secondary'
+                    >
+                      <span>수정</span>
+                    </Link>
                     <Button
                       label='삭제'
                       state='tertiary'
                       size='min'
-                      onClick={(e) => settingHandler!(e, el.id)}
+                      onClick={() => removeSettingHandler(el.id)}
                     />
                   </div>
                 </td>
@@ -172,12 +180,11 @@ export default function CmsTable({
         </tbody>
       </table>
       <Pagenation
-        totalPost={data.length}
+        totalPost={settings.length}
         totalPages={totalPages}
         postCount={postCount}
-        // searchPageHandler={(val) => searchPageHandler(val)}
         pathname={pathname}
-        page={page!}
+        page={!page ? '1' : page}
       />
     </div>
   );

@@ -1,10 +1,12 @@
-type settingsType = {
+'use server';
+
+export type settingType = {
   id: string;
   agency: string;
   collectItem: string;
   scheduleType: string;
   schedule: {
-    time: string;
+    hour: string;
     minutes: string;
     weeks?: [string];
     date?: string;
@@ -21,7 +23,7 @@ type settingsType = {
   isUsed: boolean;
 };
 
-type radioType = {
+export type radioType = {
   label: string;
   name: string;
   value: string;
@@ -29,42 +31,40 @@ type radioType = {
   disabled?: boolean;
 };
 
-const useOption = [
-  {
-    label: '사용',
-    name: 'isUsed',
-    value: 'use',
-    checked: true,
-  },
-  {
-    label: '미사용',
-    name: 'isUsed',
-    value: 'unused',
-    checked: false,
-  },
-];
-
-const unuseOption = [
-  {
-    label: '사용',
-    name: 'isUsed',
-    value: 'use',
-    checked: false,
-  },
-  {
-    label: '미사용',
-    name: 'isUsed',
-    value: 'unused',
-    checked: true,
-  },
-];
+type SearchSettingErrors = {
+  errors: undefined | { _form?: string };
+  filterd?: settingType[];
+};
 
 async function fetchSettings() {
   const response = await fetch('http://localhost:9999/settings', {
     cache: 'no-store',
   });
+
   return response.json();
 }
+async function fetchSearchSettings(
+  formstate: SearchSettingErrors,
+  formData: FormData
+): Promise<SearchSettingErrors> {
+  const searchAgency = formData.get('searchAgency') as string;
+  const searchKeyword = formData.get('searchKeyword') as string;
+  const respose = await fetch(`http://localhost:9999/settings`, {
+    cache: 'no-store',
+  }).then((res) => res.json());
 
-export { fetchSettings, useOption, unuseOption };
-export type { settingsType, radioType };
+  const filterKeyword = (items: settingType[]) =>
+    items.filter((item: settingType) =>
+      item.collectItem.includes(searchKeyword)
+    );
+
+  const result = await fetch(`http://localhost:9999/settings`, {
+    cache: 'no-cache',
+  }).then((res) => res.json());
+
+  console.log(result);
+
+  return { errors: {} };
+}
+
+export { fetchSettings, fetchSearchSettings };

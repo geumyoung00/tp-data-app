@@ -5,7 +5,7 @@ import Button from '../button';
 import InputText from './inputText';
 import Select from './select';
 import { ErrorsType } from '@/src/action/setting-schema';
-import { settingsType } from '@/src/db/settings';
+import { settingType } from '@/src/db/settings';
 
 type apiParamsType = {
   key: string;
@@ -21,7 +21,7 @@ export default function CollectTypeForm({
 }: {
   type: string;
   error: ErrorsType;
-  editFormData?: settingsType;
+  editFormData?: settingType;
 }) {
   switch (type) {
     case 'api':
@@ -126,7 +126,7 @@ export default function CollectTypeForm({
             <dl>
               <dt>유효기간</dt>
               <dd>
-                <Select label='apiExp' hide='hide'>
+                <Select label='apiExp' forLabel='apiExp' hide='hide'>
                   <select name='apiExp' id='apiExp'>
                     <option value='1year'>1년</option>
                   </select>

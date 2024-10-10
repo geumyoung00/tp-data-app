@@ -9,20 +9,18 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../button';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Pagenation({
   totalPost, // 총 게시글 수
   totalPages, //총 페이지 수
   postCount, // 페이지당 게시글 수
-  // searchPageHandler, // 페이지 검색을 위한 함수
   pathname,
   page,
 }: {
   totalPost: number;
   totalPages: number;
   postCount: number;
-  // searchPageHandler: (val: string) => void;
   pathname: string;
   page: string;
 }) {
@@ -30,6 +28,8 @@ export default function Pagenation({
   const searchPageRef = useRef<HTMLInputElement>(null);
   const activePage = parseInt(page);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const url = searchParams.toString().split('page')[0];
 
   function searchPageAction(e: React.FormEvent) {
     e.preventDefault();
@@ -70,7 +70,7 @@ export default function Pagenation({
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='첫 페이지로'
-              href={`${pathname}?page=1`}
+              href={`${pathname}?${url}page=1`}
             >
               <span>첫 페이지로</span>
               <i>
@@ -84,7 +84,7 @@ export default function Pagenation({
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='이전 페이지로'
-              href={`${pathname}?page=${parseInt(page) - 1}`}
+              href={`${pathname}?${url}page=${parseInt(page) - 1}`}
             >
               <span>이전 페이지로</span>
               <i>
@@ -102,7 +102,7 @@ export default function Pagenation({
                     parseInt(page) === el ? ' active' : ''
                   }`}
                   title={JSON.stringify(el) + '페이지로'}
-                  href={`${pathname}?page=${el}`}
+                  href={`${pathname}?${url}page=${el}`}
                 >
                   <span>{el}</span>
                 </Link>
@@ -117,7 +117,7 @@ export default function Pagenation({
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='다음 페이지로'
-              href={`${pathname}?page=${parseInt(page) + 1}`}
+              href={`${pathname}?${url}page=${parseInt(page) + 1}`}
             >
               <span>다음 페이지로</span>
               <i>
@@ -131,7 +131,7 @@ export default function Pagenation({
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='마지막 페이지로'
-              href={`${pathname}?page=${totalPages}`}
+              href={`${pathname}?${url}page=${totalPages}`}
             >
               <span>마지막 페이지로</span>
               <i>
@@ -157,7 +157,7 @@ export default function Pagenation({
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='첫 페이지로'
-              href={`${pathname}?page=1`}
+              href={`${pathname}?${url}page=1`}
             >
               <span>첫 페이지로</span>
               <i>
@@ -171,7 +171,7 @@ export default function Pagenation({
                 activePage === 1 ? ' disabled' : ''
               }`}
               title='이전 페이지로'
-              href={`${pathname}?page=${parseInt(page) - 1}`}
+              href={`${pathname}?${url}page=${parseInt(page) - 1}`}
             >
               <span>이전 페이지로</span>
               <i>
@@ -192,7 +192,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 5) + '페이지로'
                   : JSON.stringify(totalPages - 9) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 1
                   : activePage <= totalPages - 4
@@ -219,7 +219,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 4) + '페이지로'
                   : JSON.stringify(totalPages - 8) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 2
                   : activePage <= totalPages - 4
@@ -246,7 +246,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 3) + '페이지로'
                   : JSON.stringify(totalPages - 7) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 3
                   : activePage <= totalPages - 4
@@ -274,7 +274,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 2) + '페이지로'
                   : JSON.stringify(totalPages - 6) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 4
                   : activePage <= totalPages - 4
@@ -301,7 +301,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage - 1) + '페이지로'
                   : JSON.stringify(totalPages - 5) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 5
                   : activePage <= totalPages - 4
@@ -330,7 +330,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage) + '페이지로'
                   : JSON.stringify(totalPages - 4) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 6
                   : activePage <= totalPages - 4
@@ -359,7 +359,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 1) + '페이지로'
                   : JSON.stringify(totalPages - 3) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 7
                   : activePage <= totalPages - 4
@@ -388,7 +388,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 2) + '페이지로'
                   : JSON.stringify(totalPages - 2) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 8
                   : activePage <= totalPages - 4
@@ -417,7 +417,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 3) + '페이지로'
                   : JSON.stringify(totalPages - 1) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 9
                   : activePage <= totalPages - 4
@@ -446,7 +446,7 @@ export default function Pagenation({
                   ? JSON.stringify(activePage + 4) + '페이지로'
                   : JSON.stringify(totalPages) + '페이지로'
               }
-              href={`${pathname}?page=${
+              href={`${pathname}?${url}page=${
                 activePage <= 5
                   ? 10
                   : activePage <= totalPages - 4
@@ -500,7 +500,7 @@ export default function Pagenation({
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='다음 페이지로'
-              href={`${pathname}?page=${parseInt(page) + 1}`}
+              href={`${pathname}?${url}page=${parseInt(page) + 1}`}
             >
               <span>다음 페이지로</span>
               <i>
@@ -514,7 +514,7 @@ export default function Pagenation({
                 activePage === totalPages ? ' disabled' : ''
               }`}
               title='마지막 페이지로'
-              href={`${pathname}?page=${totalPages}`}
+              href={`${pathname}?${url}page=${totalPages}`}
             >
               <span>마지막 페이지로</span>
               <i>
