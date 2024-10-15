@@ -14,7 +14,7 @@ import {
   fetchSettings,
   settingType,
 } from '@/src/db/settings';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Cms() {
   const [settings, setSettings] = useState<settingType[]>([]);
@@ -29,22 +29,23 @@ export default function Cms() {
   const keyword = inputRef.current?.value;
 
   useEffect(() => {
-    fetchAgencies().then((data) =>
-      setAgencies([{ id: 'all', name: '전체' }, ...data])
+    fetchAgencies().then((agencies) =>
+      setAgencies([{ id: 'all', name: '전체' }, ...agencies])
     );
+    fetchSettings().then((settings) => setSettings(settings));
   }, []);
 
   useEffect(() => {
     if (formState.errors?._form) alert(formState.errors._form);
-    if (!formState.filterd) fetchSettings().then((data) => setSettings(data));
-
-    if (!formState.filterd && inputRef.current && inputRef.current.value) {
+    if (!formState.filterd && inputRef.current?.value) {
       inputRef.current.value = '';
       inputRef.current.focus();
     }
 
     if (formState.filterd) {
-      router.push(`/cms?agency=${agency}&keyword=${keyword}`);
+      router.push(
+        `/cms?agency=${agency}${keyword ? `&keyword=${keyword}` : ''}&page=1`
+      );
       setSettings(formState.filterd);
     }
   }, [formState]);

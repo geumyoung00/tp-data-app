@@ -3,13 +3,20 @@
 import DatePicker from '@/src/components/form/datePicker';
 import Select from '@/src/components/form/select';
 import Button from '@/src/components/button';
-import CircleGraph from '@/src/components/circleGraph';
 import ViewTable from '@/src/components/table/viewTable';
+import Charts from '@/src/components/Charts';
 import { useEffect, useRef, useState } from 'react';
 import { agencyType, fetchAgencies } from '@/src/db/agencies';
 import { dataType, fetchData, fetchSearchData } from '@/src/db/data';
 import { useFormState } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
+
+export type chartsDataType = {
+  agency: agencyType;
+  success: number;
+  faild: number;
+  collecting: number;
+};
 
 export default function View() {
   const [datas, setDatas] = useState<dataType[]>([]);
@@ -18,6 +25,7 @@ export default function View() {
   const startRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
+  const [chartsData, setChartsData] = useState<chartsDataType[]>();
   const startDate = startRef.current?.value;
   const endDate = endRef.current?.value;
   const selectAgency = selectRef.current?.value;
@@ -33,10 +41,35 @@ export default function View() {
     setMinDate(e.target.value);
 
   useEffect(() => {
-    fetchAgencies().then((data) => {
-      setAgencies([{ id: 'all', name: '전체' }, ...data]);
+    let filterArr: chartsDataType[] = [];
+    fetchAgencies().then((agencies) => {
+      setAgencies([{ id: 'all', name: '전체' }, ...agencies]);
+      agencies.forEach((agency: agencyType) => {
+        filterArr.push({ agency, success: 0, faild: 0, collecting: 0 });
+      });
     });
-    fetchData().then((data) => setDatas(data));
+    fetchData().then((datas) => {
+      setDatas(datas);
+      datas.forEach((data: dataType) => {
+        const idx = filterArr.findIndex((el) => el.agency.id === data.agency);
+
+        data.state === 'success'
+          ? (filterArr[idx] = {
+              ...filterArr[idx],
+              success: filterArr[idx]?.success + 1,
+            })
+          : data.state === 'faild'
+          ? (filterArr[idx] = {
+              ...filterArr[idx],
+              faild: filterArr[idx]?.faild + 1,
+            })
+          : (filterArr[idx] = {
+              ...filterArr[idx],
+              collecting: filterArr[idx]?.collecting + 1,
+            });
+      });
+      setChartsData(filterArr);
+    });
   }, []);
 
   useEffect(() => {
@@ -101,11 +134,11 @@ export default function View() {
           </li>
         </ul>
       </form>
-      {/* <div className='board'>
-        <CircleGraph />
-        <CircleGraph />
-        <CircleGraph />
-      </div> */}
+      <div className='charts'>
+        {chartsData?.map((data) => {
+          return <Charts key={data.agency.id} countData={data} />;
+        })}
+      </div>
       <ViewTable datas={datas} />
     </div>
   );

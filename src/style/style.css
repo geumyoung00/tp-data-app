@@ -1287,7 +1287,7 @@ body {
   margin-right: 0;
 }
 
-.board {
+.charts {
   width: 100%;
   height: auto;
   background: #ffffff;
@@ -1306,11 +1306,11 @@ body {
   grid-column-gap: 2.4rem;
   box-sizing: border-box;
 }
-.board .graph-wrap {
+.charts .graph-wrap {
   flex-basis: auto;
   flex-grow: 1;
 }
-.board .graph-wrap .graph {
+.charts .graph-wrap .graph {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1319,21 +1319,22 @@ body {
   margin-bottom: 4.8rem;
   box-sizing: border-box;
   padding: 0 1rem;
+  position: relative;
 }
-.board .graph-wrap .graph .contents {
+.charts .graph-wrap .graph .contents {
   width: 100%;
-  height: 100%;
+  height: 30rem;
   background: #2853E5;
   box-sizing: border-box;
 }
-.board .graph-wrap h3 {
+.charts .graph-wrap h3 {
   font-size: 2rem;
   line-height: 1.4;
   font-weight: 700;
   color: #2f3443;
   margin-bottom: 1.6rem;
 }
-.board .graph-wrap ol {
+.charts .graph-wrap ol {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -1341,7 +1342,7 @@ body {
   grid-column-gap: 3.2rem;
   padding: 1.6rem 0;
 }
-.board .graph-wrap ol li {
+.charts .graph-wrap ol li {
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.4;
@@ -1349,22 +1350,22 @@ body {
   color: #2f3443;
   position: relative;
 }
-.board .graph-wrap ol li .count {
+.charts .graph-wrap ol li .count {
   font-size: 2.6rem;
   font-weight: 700;
   line-height: 1;
   margin-bottom: 0.8rem;
 }
-.board .graph-wrap ol li.success .count {
+.charts .graph-wrap ol li.success .count {
   color: #00B07B;
 }
-.board .graph-wrap ol li.faild .count {
+.charts .graph-wrap ol li.faild .count {
   color: #ff4343;
 }
-.board .graph-wrap ol li.pending .count {
+.charts .graph-wrap ol li.pending .count {
   color: #2853E5;
 }
-.board .graph-wrap ol li + li::before {
+.charts .graph-wrap ol li + li::before {
   display: block;
   content: "";
   width: 1px;

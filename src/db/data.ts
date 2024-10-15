@@ -35,44 +35,44 @@ async function fetchSearchData(
   const searchAgency = formData.get('searchAgency');
   const searchStartDate = formData.get('searchStartDate');
   const searchEndDate = formData.get('searchEndDate');
-  let data: dataType[];
+  let result: dataType[];
 
   switch (searchAgency) {
     case 'all':
       if (!searchStartDate) {
-        data = await fetch(`http://localhost:9999/data`).then((res) =>
+        result = await fetch(`http://localhost:9999/data`).then((res) =>
           res.json()
         );
-        return { errors: undefined, filterd: data };
+        return { errors: undefined, filterd: result };
       }
 
       if (searchStartDate && !searchEndDate)
         return { errors: { _form: '검색 종료일은 오늘 날짜로 설정됩니다.' } };
 
-      data = await fetch(
+      result = await fetch(
         `http://localhost:9999/data/?date_gte=${searchStartDate}&date_lte=${searchEndDate}`
       ).then((res) => res.json());
 
-      if (data.length < 1)
+      if (result.length < 1)
         return { errors: { _form: '검색 결과가 없습니다.' } };
 
-      return { errors: undefined, filterd: data };
+      return { errors: undefined, filterd: result };
 
     default:
       if (!searchStartDate) {
-        data = await fetch(
+        result = await fetch(
           `http://localhost:9999/data/?agency=${searchAgency}`
         ).then((res) => res.json());
       } else {
-        data = await fetch(
+        result = await fetch(
           `http://localhost:9999/data/?agency=${searchAgency}&date_gte=${searchStartDate}&date_lte=${searchEndDate}`
         ).then((res) => res.json());
       }
 
-      if (data.length < 1)
+      if (result.length < 1)
         return { errors: { _form: '검색 결과가 없습니다.' } };
 
-      return { errors: undefined, filterd: data };
+      return { errors: undefined, filterd: result };
   }
 }
 

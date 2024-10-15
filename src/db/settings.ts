@@ -40,31 +40,49 @@ async function fetchSettings() {
   const response = await fetch('http://localhost:9999/settings', {
     cache: 'no-store',
   });
-
   return response.json();
 }
+
 async function fetchSearchSettings(
   formstate: SearchSettingErrors,
   formData: FormData
 ): Promise<SearchSettingErrors> {
   const searchAgency = formData.get('searchAgency') as string;
   const searchKeyword = formData.get('searchKeyword') as string;
-  const respose = await fetch(`http://localhost:9999/settings`, {
-    cache: 'no-store',
-  }).then((res) => res.json());
+  let result: settingType[];
 
-  const filterKeyword = (items: settingType[]) =>
-    items.filter((item: settingType) =>
-      item.collectItem.includes(searchKeyword)
-    );
+  switch (searchAgency) {
+    case 'all':
+      if (!searchKeyword) {
+        result = await fetch(`http://localhost:9999/settings`, {
+          cache: 'no-cache',
+        }).then((res) => res.json());
+        return { errors: undefined, filterd: result };
+      }
 
-  const result = await fetch(`http://localhost:9999/settings`, {
-    cache: 'no-cache',
-  }).then((res) => res.json());
+      result = await fetch(
+        `http://localhost:9999/settings/?q=${searchKeyword}`,
+        {
+          cache: 'no-cache',
+        }
+      ).then((res) => res.json());
+      break;
 
-  console.log(result);
+    default:
+      result = await fetch(
+        `http://localhost:9999/settings/?agency=${searchAgency}${
+          searchKeyword ? `&q=${searchKeyword}` : ''
+        }`,
+        {
+          cache: 'no-cache',
+        }
+      ).then((res) => res.json());
+      break;
+  }
 
-  return { errors: {} };
+  if (result.length < 1) return { errors: { _form: '검색 결과가 없습니다.' } };
+
+  return { errors: undefined, filterd: result };
 }
 
 export { fetchSettings, fetchSearchSettings };

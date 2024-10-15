@@ -197,12 +197,16 @@ export default function MngTable() {
         if (prevName === nowName) {
           if (
             confirm(
-              `수정된 내용이 없습니다.\n취소를 누르시면 수정창이 닫힙니다.`
+              `수정된 내용이 없습니다.\n확인을 누르시면 수정창이 닫힙니다.`
             )
-          )
-            return selectNameInput.focus();
-          else {
-          }
+          ) {
+            return (
+              selectNameInput.setAttribute('readOnly', 'true'),
+              (changeData = { id: selectIdText, name: nowName, isEdit: false }),
+              (changeArr[nowIdx] = changeData),
+              setMngData(changeArr)
+            );
+          } else return selectNameInput.focus();
         }
 
         if (prevName !== nowName.trim().split(' ').join('').toUpperCase())

@@ -71,6 +71,7 @@ export default function Pagenation({
               }`}
               title='첫 페이지로'
               href={`${pathname}?${url}page=1`}
+              scroll={false}
             >
               <span>첫 페이지로</span>
               <i>
@@ -85,6 +86,7 @@ export default function Pagenation({
               }`}
               title='이전 페이지로'
               href={`${pathname}?${url}page=${parseInt(page) - 1}`}
+              scroll={false}
             >
               <span>이전 페이지로</span>
               <i>
@@ -103,6 +105,7 @@ export default function Pagenation({
                   }`}
                   title={JSON.stringify(el) + '페이지로'}
                   href={`${pathname}?${url}page=${el}`}
+                  scroll={false}
                 >
                   <span>{el}</span>
                 </Link>
@@ -118,6 +121,7 @@ export default function Pagenation({
               }`}
               title='다음 페이지로'
               href={`${pathname}?${url}page=${parseInt(page) + 1}`}
+              scroll={false}
             >
               <span>다음 페이지로</span>
               <i>
@@ -132,6 +136,7 @@ export default function Pagenation({
               }`}
               title='마지막 페이지로'
               href={`${pathname}?${url}page=${totalPages}`}
+              scroll={false}
             >
               <span>마지막 페이지로</span>
               <i>
@@ -158,6 +163,7 @@ export default function Pagenation({
               }`}
               title='첫 페이지로'
               href={`${pathname}?${url}page=1`}
+              scroll={false}
             >
               <span>첫 페이지로</span>
               <i>
@@ -172,6 +178,7 @@ export default function Pagenation({
               }`}
               title='이전 페이지로'
               href={`${pathname}?${url}page=${parseInt(page) - 1}`}
+              scroll={false}
             >
               <span>이전 페이지로</span>
               <i>
@@ -199,6 +206,7 @@ export default function Pagenation({
                   ? activePage - 5
                   : totalPages - 9
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -226,6 +234,7 @@ export default function Pagenation({
                   ? activePage - 4
                   : totalPages - 8
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -254,6 +263,7 @@ export default function Pagenation({
                   : totalPages - 7
               }
               `}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -281,6 +291,7 @@ export default function Pagenation({
                   ? activePage - 2
                   : totalPages - 6
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -308,6 +319,7 @@ export default function Pagenation({
                   ? activePage - 1
                   : totalPages - 5
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -337,6 +349,7 @@ export default function Pagenation({
                   ? activePage
                   : totalPages - 4
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -366,6 +379,7 @@ export default function Pagenation({
                   ? activePage + 1
                   : totalPages - 3
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -395,6 +409,7 @@ export default function Pagenation({
                   ? activePage + 2
                   : totalPages - 2
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -424,6 +439,7 @@ export default function Pagenation({
                   ? activePage + 3
                   : totalPages - 1
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -453,6 +469,7 @@ export default function Pagenation({
                   ? activePage + 4
                   : totalPages
               }`}
+              scroll={false}
             >
               <span>
                 {activePage <= 5
@@ -501,6 +518,7 @@ export default function Pagenation({
               }`}
               title='다음 페이지로'
               href={`${pathname}?${url}page=${parseInt(page) + 1}`}
+              scroll={false}
             >
               <span>다음 페이지로</span>
               <i>
@@ -515,6 +533,7 @@ export default function Pagenation({
               }`}
               title='마지막 페이지로'
               href={`${pathname}?${url}page=${totalPages}`}
+              scroll={false}
             >
               <span>마지막 페이지로</span>
               <i>
