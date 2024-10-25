@@ -49,8 +49,6 @@ export default function CmsTable({ settings }: { settings: settingType[] }) {
 
   let itemIdx = startIdx;
 
-  console.log(posts);
-
   return (
     <div className='table'>
       <TableTop
