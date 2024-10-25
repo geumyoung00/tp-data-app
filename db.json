@@ -68,9 +68,9 @@
       "collectItem": "풍향/풍속",
       "scheduleType": "weekly",
       "schedule": {
-        "weeks": ["mon", "thu"],
         "hour": "02",
-        "minutes": "25"
+        "minutes": "25",
+        "weeks": ["mon", "thu"]
       },
       "root": "/data/khoa/wind/",
       "collectType": "api",
@@ -89,7 +89,7 @@
           },
           {
             "key": "three",
-            "value": "value three"
+            "value": "three"
           }
         ]
       },

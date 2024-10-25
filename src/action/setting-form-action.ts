@@ -238,6 +238,8 @@ async function settingFormHandler(
     if (compareSetting) return { errors: { _form: '수정된 사항이 없습니다.' } };
   }
 
+  console.log(result.error);
+
   if (!result?.success) {
     return { errors: result?.error.flatten().fieldErrors };
   }

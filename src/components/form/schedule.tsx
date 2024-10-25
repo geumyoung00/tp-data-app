@@ -24,11 +24,11 @@ export default function ScheduleForm({
   const [periodType, setPeriodType] = useState<string>('periodDaily');
   const scheduleType = editFormData?.scheduleType;
   const schedule = editFormData?.schedule;
-  const time = schedule?.hour,
-    minutes = schedule?.minutes,
-    weeks = schedule?.weeks,
-    date = schedule?.date,
-    endDate = schedule?.endDate;
+  const hour = schedule?.hour;
+  const minutes = schedule?.minutes;
+  const weeks = schedule?.weeks;
+  const date = schedule?.date;
+  const endDate = schedule?.endDate;
 
   useEffect(() => {
     if (scheduleType === 'period' && !weeks) setPeriodType('periodDaily');
@@ -69,7 +69,7 @@ export default function ScheduleForm({
         ''
       )}
       <Select label='time' forLabel='time' hide='hide'>
-        <select name='time' id='time' defaultValue={time}>
+        <select name='time' id='time' defaultValue={hour}>
           <option value='' hidden></option>
           {timeArr.map((num) => {
             return (
@@ -109,7 +109,7 @@ export default function ScheduleForm({
                 name='time'
                 id='time'
                 ref={(ref: HTMLSelectElement) => formRefHandler('time', ref)}
-                defaultValue={time}
+                defaultValue={hour}
               >
                 <option value='' hidden></option>
                 {timeArr.map((num) => {
@@ -184,7 +184,7 @@ export default function ScheduleForm({
                 name='time'
                 id='time'
                 ref={(ref: HTMLSelectElement) => formRefHandler('time', ref)}
-                defaultValue={time}
+                defaultValue={hour}
               >
                 <option value='' hidden></option>
                 {timeArr.map((num) => {
@@ -236,7 +236,7 @@ export default function ScheduleForm({
                 name='time'
                 id='time'
                 ref={(ref: HTMLSelectElement) => formRefHandler('time', ref)}
-                defaultValue={time}
+                defaultValue={hour}
               >
                 <option value='' hidden></option>
                 {timeArr.map((num) => {
