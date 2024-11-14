@@ -70,7 +70,10 @@
       "schedule": {
         "hour": "02",
         "minutes": "25",
-        "weeks": ["mon", "thu"]
+        "weeks": [
+          "mon",
+          "thu"
+        ]
       },
       "root": "/data/khoa/wind/",
       "collectType": "api",
@@ -136,7 +139,10 @@
       "schedule": {
         "date": "2024-04-01",
         "endDate": "2024-07-30",
-        "weeks": ["tue", "sat"],
+        "weeks": [
+          "tue",
+          "sat"
+        ],
         "hour": "20",
         "minutes": "05"
       },
@@ -269,7 +275,10 @@
       "schedule": {
         "hour": "13",
         "minutes": "15",
-        "weeks": ["mon", "thu"]
+        "weeks": [
+          "mon",
+          "thu"
+        ]
       },
       "root": "/data/khoa/wind/",
       "collectType": "api",

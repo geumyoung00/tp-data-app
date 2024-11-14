@@ -8,26 +8,15 @@ import { agencyType, fetchAgencies } from '@/src/db/agencies';
 
 export default function MngAgenciesModal() {
   const [agencies, setAgencies] = useState<mngDataType[]>([]);
-
   useEffect(() => {
-    fetchAgencies().then((data) => {
-      let result: mngDataType[] = [];
-      data.forEach((item: agencyType) => {
-        result.push({
-          ...item,
-          isEdit: false,
-        });
-      });
-
-      return setAgencies(result);
-    });
+    fetchAgencies().then((data) => setAgencies(data));
   }, []);
 
   return (
     <Modal title='등록 기관 관리'>
       <div className='modal-table'>
         {agencies ? (
-          <MngTable data={agencies} />
+          <MngTable />
         ) : (
           <table className='empty'>
             <tbody>

@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../button';
 import Checkbox from '../form/checkbox';
 import InputText from '../form/inputText';
-import { usePathname, useRouter } from 'next/navigation';
-import { mngUpdateHandler, mngDataType } from '@/src/action/form/mng-update';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  agenciesUpdateHandler,
+  mngDataType,
+} from '@/src/action/form/mng-update';
 import { fetchAgencies } from '@/src/db/agencies';
 import { fetchCollectItems } from '@/src/db/collectItems';
 
@@ -13,7 +16,13 @@ export default function MngTable() {
   const [mngData, setMngData] = useState<mngDataType[]>([]);
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const pathname = usePathname();
-  const nowPath = pathname.includes('agencies')
+  const nowData = pathname.includes('agencies')
+    ? 'agencies'
+    : pathname.includes('collectItems')
+    ? 'collectItems'
+    : '';
+
+  const checkPath = pathname.includes('agencies')
     ? '기관'
     : pathname.includes('collectItems')
     ? '수집 항목'
@@ -83,7 +92,7 @@ export default function MngTable() {
         const addNameInput = addRefs.current[1];
         const addNameValue = addNameInput.value;
         const addIdValue = addIdInput.value;
-        const notKor = /^[a-zA-z]+$/ && /^[a-zA-z0-9]+$/;
+        const notKor = /^[a-zA-z0-9]+$/;
 
         const compareName = mngData.filter(
           (el) =>
@@ -103,7 +112,7 @@ export default function MngTable() {
 
         if (!addNameInput.value || compareName.length > 0) {
           !addNameInput.value
-            ? alert(nowPath + ' 이름을 입력하세요.')
+            ? alert(checkPath + ' 이름을 입력하세요.')
             : alert('동일한 이름이 있습니다.');
           addNameInput.focus();
           return;
@@ -111,7 +120,7 @@ export default function MngTable() {
 
         if (!addIdInput.value || compareId.length > 0) {
           !addIdInput.value
-            ? alert(nowPath + ' 아이디를 입력하세요.')
+            ? alert(checkPath + ' 아이디를 입력하세요.')
             : alert('동일한 아이디가 있습니다.');
           addIdInput.focus();
           return;
@@ -124,8 +133,13 @@ export default function MngTable() {
           return;
         }
 
-        const newData = { type, item: { id: addIdValue, name: addNameValue } };
-        mngUpdateHandler(newData);
+        const newData = {
+          type,
+          data: nowData,
+          item: { id: addIdValue, name: addNameValue },
+        };
+
+        agenciesUpdateHandler(newData);
         setMngData((prev) => [
           ...prev,
           {
@@ -149,7 +163,8 @@ export default function MngTable() {
 
         if (checkedList.length === mngData.length) {
           if (confirm(`전체 항목을 삭제하시나요?`)) {
-            mngUpdateHandler({ type, item: checkedList });
+            agenciesUpdateHandler({ type, data: nowData, item: checkedList });
+
             setMngData([]);
             return;
           } else return;
@@ -164,7 +179,7 @@ export default function MngTable() {
             )}\n\n위 항목을 삭제할까요?
             `)
           ) {
-            mngUpdateHandler({ type, item: checkedList });
+            agenciesUpdateHandler({ type, data: nowData, item: checkedList });
             setMngData(
               mngData.filter((item) => !filterNames.includes(item.name))
             );
@@ -210,7 +225,11 @@ export default function MngTable() {
         }
 
         if (prevName !== nowName.trim().split(' ').join('').toUpperCase())
-          mngUpdateHandler({ type, item: { id: selectIdText, name: nowName } });
+          agenciesUpdateHandler({
+            type,
+            data: nowData,
+            item: { id: selectIdText, name: nowName },
+          });
 
         changeData = { id: selectIdText, name: nowName, isEdit: false };
         changeArr[nowIdx] = changeData;
@@ -246,8 +265,8 @@ export default function MngTable() {
                 <span>전체 선택</span>
               </Checkbox>
             </th>
-            <th>{nowPath} 아이디</th>
-            <th>{nowPath} 이름</th>
+            <th>{checkPath} 아이디</th>
+            <th>{checkPath} 이름</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -266,13 +285,14 @@ export default function MngTable() {
                 </td>
                 <td>
                   <InputText
-                    label={`신규 등록 ${nowPath} 입력`}
+                    label={`신규 등록 ${checkPath} 입력`}
                     size='min'
                     hide='hide'
                   >
                     <input
                       type='text'
                       name='newAgencyName'
+                      id={`신규 등록 ${checkPath} 입력`}
                       ref={(el: HTMLInputElement) => {
                         addRefs.current[0] = el;
                       }}
@@ -281,7 +301,7 @@ export default function MngTable() {
                 </td>
                 <td>
                   <InputText
-                    label={`신규 등록 ${nowPath} 아이디 입력`}
+                    label={`신규 등록 ${checkPath} 아이디 입력`}
                     size='min'
                     hide='hide'
                   >
@@ -289,6 +309,7 @@ export default function MngTable() {
                       type='text'
                       name='newAgencyId'
                       autoFocus
+                      id={`신규 등록 ${checkPath} 아이디 입력`}
                       ref={(el: HTMLInputElement) => {
                         addRefs.current[1] = el;
                       }}
@@ -324,6 +345,7 @@ export default function MngTable() {
                         <input
                           type='text'
                           name={item.id + 'Id'}
+                          id={item.name}
                           readOnly
                           defaultValue={item.id}
                           ref={(el) => {

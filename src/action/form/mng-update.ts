@@ -8,15 +8,19 @@ type mngDataType = {
 
 type mngUpdateDataType = {
   type: string;
+  data: string;
   item: { id: string; name: string };
 };
 
 export type mngRemoveDataType = {
   type: string;
+  data: string;
   item: string[];
 };
 
-async function mngUpdateHandler(el: mngUpdateDataType | mngRemoveDataType) {
+async function agenciesUpdateHandler(
+  el: mngUpdateDataType | mngRemoveDataType
+) {
   if (el.type === 'add') {
     const { item } = el as mngUpdateDataType;
 
@@ -26,8 +30,10 @@ async function mngUpdateHandler(el: mngUpdateDataType | mngRemoveDataType) {
       body: JSON.stringify({ name: item.name, id: item.id }),
     };
 
-    await fetch(`http://localhost:9999/agencies`, addDataOptions).then((res) =>
-      res.json()
+    console.log(el.data);
+
+    await fetch(`http://localhost:9999/${el.data}`, addDataOptions).then(
+      (res) => res.json()
     );
   }
 
@@ -36,7 +42,7 @@ async function mngUpdateHandler(el: mngUpdateDataType | mngRemoveDataType) {
     let deleteItem: string[] = [...(el.item as string[])];
     if (deleteItem.length === 1) {
       await fetch(
-        `http://localhost:9999/agencies/${deleteItem[0]}`,
+        `http://localhost:9999/${el.data}/${deleteItem[0]}`,
         deleteDataOptions
       )
         .then((res) => res.json())
@@ -44,7 +50,7 @@ async function mngUpdateHandler(el: mngUpdateDataType | mngRemoveDataType) {
       return;
     } else {
       deleteItem.forEach((n: any) => {
-        fetch(`http://localhost:9999/agencies/${n}`, deleteDataOptions)
+        fetch(`http://localhost:9999/${el.data}/${n}`, deleteDataOptions)
           .then((res) => res.json())
           .then(() => {});
       });
@@ -60,11 +66,11 @@ async function mngUpdateHandler(el: mngUpdateDataType | mngRemoveDataType) {
       body: JSON.stringify({ id: item.id, name: item.name }),
     };
 
-    await fetch(`http://localhost:9999/agencies/${item.id}`, SaveDataOptions)
+    await fetch(`http://localhost:9999/${el.data}/${item.id}`, SaveDataOptions)
       .then((res) => res.json())
       .then(() => {});
   }
 }
 
-export { mngUpdateHandler };
+export { agenciesUpdateHandler };
 export type { mngDataType, mngUpdateDataType };
