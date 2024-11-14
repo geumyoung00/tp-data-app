@@ -15,7 +15,17 @@ export default function MngcollectItemsModal() {
   return (
     <Modal title='수집 데이터 관리'>
       <div className='modal-table'>
-        {collectItems ? <MngTable /> : <p>데이터가 없습니다.</p>}
+        {collectItems ? (
+          <MngTable />
+        ) : (
+          <table className='empty'>
+            <tbody>
+              <tr>
+                <td>등록된 데이터가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+        )}
       </div>
     </Modal>
   );
